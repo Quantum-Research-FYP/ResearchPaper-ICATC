@@ -1,0 +1,20 @@
+{
+  "record_id": "PV096",
+  "circuit_id": "T20",
+  "pass_name": "ApplyLayout",
+  "pass_type": "TransformationPass",
+  "stage": "Qubit Mapping",
+  "execution_time_ms": 1.1334419250488281,
+  "before": {
+    "gates": 36,
+    "depth": 31
+  },
+  "after": {
+    "gates": 36,
+    "depth": 31
+  },
+  "delta_gates": 0,
+  "delta_depth": 0,
+  "changed_gates": [],
+  "circuit_changed": false
+}

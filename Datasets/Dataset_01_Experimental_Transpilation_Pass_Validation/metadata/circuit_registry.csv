@@ -1,0 +1,31 @@
+﻿circuit_id,circuit_name,qubit_count,source_circuit_file,source_hash,parameters_or_seed,target_backend,target_topology,execution_status,provenance,notes
+T01,basic_single_qubit,2,circuits/qasm3/T01_basic_single_qubit.qasm,56098adee8d61e8e,none,linear_6 / h_shape_7,linear / h-tree,COMPLETED_EXECUTION,EMPIRICAL_BENCHMARK_CIRCUITS,1q gates only
+T02,bell_state,2,circuits/qasm3/T02_bell_state.qasm,8a7bbb9a9327380b,none,linear_6 / h_shape_7,linear / h-tree,COMPLETED_EXECUTION,EMPIRICAL_BENCHMARK_CIRCUITS,
+T03,bell_measurement,2,circuits/qasm3/T03_bell_measurement.qasm,8a7bbb9a9327380b,none,linear_6 / h_shape_7,linear / h-tree,COMPLETED_EXECUTION,EMPIRICAL_BENCHMARK_CIRCUITS,Measurement present
+T04,ghz_3,3,circuits/qasm3/T04_ghz_3.qasm,a054683450414ea7,none,linear_6 / h_shape_7,linear / h-tree,COMPLETED_EXECUTION,EMPIRICAL_BENCHMARK_CIRCUITS,
+T05,ghz_4,4,circuits/qasm3/T05_ghz_4.qasm,4013a1a0ee23e76c,none,linear_6 / h_shape_7,linear / h-tree,COMPLETED_EXECUTION,EMPIRICAL_BENCHMARK_CIRCUITS,
+T06,rotations,2,circuits/qasm3/T06_rotations.qasm,3cc0b26ae256e656,none,linear_6 / h_shape_7,linear / h-tree,COMPLETED_EXECUTION,EMPIRICAL_BENCHMARK_CIRCUITS,
+T07,rotation_merge_opportunity,1,circuits/qasm3/T07_rotation_merge_opportunity.qasm,2a0341890d54f8ee,none,linear_6 / h_shape_7,linear / h-tree,COMPLETED_EXECUTION,EMPIRICAL_BENCHMARK_CIRCUITS,Optimisation: merge rotations
+T08,h_h_cancellation,1,circuits/qasm3/T08_h_h_cancellation.qasm,4c1fb725e0f181a6,none,linear_6 / h_shape_7,linear / h-tree,COMPLETED_EXECUTION,EMPIRICAL_BENCHMARK_CIRCUITS,Optimisation: cancel inverse pair
+T09,x_x_cancellation,1,circuits/qasm3/T09_x_x_cancellation.qasm,34bf1286ba614b1e,none,linear_6 / h_shape_7,linear / h-tree,COMPLETED_EXECUTION,EMPIRICAL_BENCHMARK_CIRCUITS,Optimisation: cancel inverse pair
+T10,cx_cx_cancellation,2,circuits/qasm3/T10_cx_cx_cancellation.qasm,2e89e0f1e9613f60,none,linear_6 / h_shape_7,linear / h-tree,COMPLETED_EXECUTION,EMPIRICAL_BENCHMARK_CIRCUITS,Optimisation: cancel inverse CX pair
+T11,cx_chain,3,circuits/qasm3/T11_cx_chain.qasm,cacfc29563c6ad19,none,linear_6 / h_shape_7,linear / h-tree,COMPLETED_EXECUTION,EMPIRICAL_BENCHMARK_CIRCUITS,Routing on linear coupling map
+T12,reverse_cx,2,circuits/qasm3/T12_reverse_cx.qasm,2d5aa1924c0d6386,none,linear_6 / h_shape_7,linear / h-tree,COMPLETED_EXECUTION,EMPIRICAL_BENCHMARK_CIRCUITS,Gate direction
+T13,swap_circuit,3,circuits/qasm3/T13_swap_circuit.qasm,8c44fe7f5308b41c,none,linear_6 / h_shape_7,linear / h-tree,COMPLETED_EXECUTION,EMPIRICAL_BENCHMARK_CIRCUITS,SWAP decomposition
+T14,swap_entanglement,3,circuits/qasm3/T14_swap_entanglement.qasm,c5daa936ce45a663,none,linear_6 / h_shape_7,linear / h-tree,COMPLETED_EXECUTION,EMPIRICAL_BENCHMARK_CIRCUITS,
+T15,barrier_circuit,2,circuits/qasm3/T15_barrier_circuit.qasm,83ee0f67378890f0,none,linear_6 / h_shape_7,linear / h-tree,COMPLETED_EXECUTION,EMPIRICAL_BENCHMARK_CIRCUITS,Barriers block optimisation
+T16,barrier_h_h_h,1,circuits/qasm3/T16_barrier_h_h_h.qasm,26b4c321d2ef91a5,none,linear_6 / h_shape_7,linear / h-tree,COMPLETED_EXECUTION,EMPIRICAL_BENCHMARK_CIRCUITS,Barriers block cancellation
+T17,controlled_rotations,2,circuits/qasm3/T17_controlled_rotations.qasm,4e51de3ae4fabbc5,none,linear_6 / h_shape_7,linear / h-tree,COMPLETED_EXECUTION,EMPIRICAL_BENCHMARK_CIRCUITS,Non-native controlled rotations
+T18,toffoli,3,circuits/qasm3/T18_toffoli.qasm,0f3e7d5caca0281a,none,linear_6 / h_shape_7,linear / h-tree,COMPLETED_EXECUTION,EMPIRICAL_BENCHMARK_CIRCUITS,Non-native 3-qubit gate
+T19,toffoli_extended,3,circuits/qasm3/T19_toffoli_extended.qasm,2dda5f7848010b32,none,linear_6 / h_shape_7,linear / h-tree,COMPLETED_EXECUTION,EMPIRICAL_BENCHMARK_CIRCUITS,
+T20,mcx3,4,circuits/qasm3/T20_mcx3.qasm,23796fc39dcc7183,none,linear_6 / h_shape_7,linear / h-tree,COMPLETED_EXECUTION,EMPIRICAL_BENCHMARK_CIRCUITS,Non-native multi-controlled gate
+T21,qft_3,3,circuits/qasm3/T21_qft_3.qasm,b2225cda67e4277f,none,linear_6 / h_shape_7,linear / h-tree,COMPLETED_EXECUTION,EMPIRICAL_BENCHMARK_CIRCUITS,QFT (controlled-phase + swaps)
+T22,qft_4,4,circuits/qasm3/T22_qft_4.qasm,7cfca92dd9e209e7,none,linear_6 / h_shape_7,linear / h-tree,COMPLETED_EXECUTION,EMPIRICAL_BENCHMARK_CIRCUITS,
+T23,h_cz_h_phase,2,circuits/qasm3/T23_h_cz_h_phase.qasm,cc117bb40f393875,none,linear_6 / h_shape_7,linear / h-tree,COMPLETED_EXECUTION,EMPIRICAL_BENCHMARK_CIRCUITS,
+T24,mixed_entanglement,3,circuits/qasm3/T24_mixed_entanglement.qasm,a2b100d343e5c7c5,none,linear_6 / h_shape_7,linear / h-tree,COMPLETED_EXECUTION,EMPIRICAL_BENCHMARK_CIRCUITS,
+T25,parameterized,2,circuits/qasm3/T25_parameterized.qasm,e2e64ed2ba2d0b2f,none,linear_6 / h_shape_7,linear / h-tree,COMPLETED_EXECUTION,EMPIRICAL_BENCHMARK_CIRCUITS,Symbolic parameter
+T26,parameterized_repeated,2,circuits/qasm3/T26_parameterized_repeated.qasm,498b7b28ce6c36b3,none,linear_6 / h_shape_7,linear / h-tree,COMPLETED_EXECUTION,EMPIRICAL_BENCHMARK_CIRCUITS,Repeated symbolic rotations
+T27,connectivity_challenge,4,circuits/qasm3/T27_connectivity_challenge.qasm,fde2adef9acd4b3b,none,linear_6 / h_shape_7,linear / h-tree,COMPLETED_EXECUTION,EMPIRICAL_BENCHMARK_CIRCUITS,Violates linear coupling map
+T28,long_range_cx,5,circuits/qasm3/T28_long_range_cx.qasm,d959b527efd64476,none,linear_6 / h_shape_7,linear / h-tree,COMPLETED_EXECUTION,EMPIRICAL_BENCHMARK_CIRCUITS,Long-range CX
+T29,mixed_4q,4,circuits/qasm3/T29_mixed_4q.qasm,6516c500b85a759f,none,linear_6 / h_shape_7,linear / h-tree,COMPLETED_EXECUTION,EMPIRICAL_BENCHMARK_CIRCUITS,
+T30,random_5q_seed42,5,circuits/qasm3/T30_random_5q_seed42.qasm,57e1c12dd39a3377,none,linear_6 / h_shape_7,linear / h-tree,COMPLETED_EXECUTION,EMPIRICAL_BENCHMARK_CIRCUITS,

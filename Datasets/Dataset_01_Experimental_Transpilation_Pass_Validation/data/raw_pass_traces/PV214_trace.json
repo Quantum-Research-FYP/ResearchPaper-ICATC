@@ -1,0 +1,23 @@
+{
+  "record_id": "PV214",
+  "circuit_id": "T07",
+  "pass_name": "Optimize1qGatesDecomposition",
+  "pass_type": "TransformationPass",
+  "stage": "Optimization",
+  "execution_time_ms": 0.0,
+  "before": {
+    "gates": 17,
+    "depth": 17
+  },
+  "after": {
+    "gates": 5,
+    "depth": 5
+  },
+  "delta_gates": -12,
+  "delta_depth": -12,
+  "changed_gates": [
+    "rz: -8",
+    "sx: -4"
+  ],
+  "circuit_changed": true
+}

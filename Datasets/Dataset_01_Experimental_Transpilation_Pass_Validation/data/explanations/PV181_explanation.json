@@ -1,0 +1,11 @@
+{
+  "explanation_id": "EXP_PV181",
+  "record_id": "PV181",
+  "pass_name": "GatesInBasis",
+  "stage": "Gate Decomposition",
+  "purpose": "Translates or decomposes gates into the target hardware's native gate set.",
+  "rationale": "Decomposes gates into basis operations physically supported by the target device.",
+  "pipeline_reason": "This pass is part of the gate decomposition and basis conversion pipeline.",
+  "engine_version": "QuantumStudio-TranspileEngine-v2.1",
+  "timestamp_utc": "2026-11-18T10:00:00Z"
+}

@@ -1,0 +1,19 @@
+{
+  "dataset_id": "DATASET_01_EXPERIMENTAL_TRANSPILATION_PASS_VALIDATION",
+  "paper_id": 268,
+  "version": "2.0.0",
+  "description": "Empirical pass-level transpilation explanation benchmark with 347 verified transformation executions, before/after snapshots, QASM3 dumps, blinded evaluator ratings, and adjudication records.",
+  "record_count": 347,
+  "cohens_kappa": 0.833,
+  "strict_accuracy": 95.7,
+  "adjudicated_correct": 332,
+  "adjudicated_partial": 10,
+  "adjudicated_incorrect": 5,
+  "evaluators": [
+    "EVAL_01 (Senior Quantum Compiler Researcher)",
+    "EVAL_02 (Quantum Systems Engineer)",
+    "ADJUDICATOR_01 (Principal Quantum Scientist)"
+  ],
+  "compiler": "Qiskit 1.4.6",
+  "explanation_engine": "Quantum Studio Transparent Transpilation Engine v2.1"
+}

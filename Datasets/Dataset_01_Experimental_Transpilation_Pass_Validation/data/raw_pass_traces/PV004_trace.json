@@ -1,0 +1,20 @@
+{
+  "record_id": "PV004",
+  "circuit_id": "T30",
+  "pass_name": "Depth",
+  "pass_type": "AnalysisPass",
+  "stage": "Circuit Analysis",
+  "execution_time_ms": 1.0085105895996094,
+  "before": {
+    "gates": 107,
+    "depth": 58
+  },
+  "after": {
+    "gates": 107,
+    "depth": 58
+  },
+  "delta_gates": 0,
+  "delta_depth": 0,
+  "changed_gates": [],
+  "circuit_changed": false
+}

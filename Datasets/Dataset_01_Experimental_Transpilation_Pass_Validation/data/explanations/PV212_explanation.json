@@ -1,0 +1,11 @@
+{
+  "explanation_id": "EXP_PV212",
+  "record_id": "PV212",
+  "pass_name": "Optimize1qGatesDecomposition",
+  "stage": "Optimization",
+  "purpose": "Combines sequences of single-qubit gates on the same qubit into a more compact equivalent.",
+  "rationale": "Consecutive single-qubit gates are mathematically equivalent to a single rotation. Merging them reduces gate execution time and overall error rate.",
+  "pipeline_reason": "This pass is part of the single-qubit gate optimization pipeline configured for the current optimization level.",
+  "engine_version": "QuantumStudio-TranspileEngine-v2.1",
+  "timestamp_utc": "2026-11-18T10:00:00Z"
+}

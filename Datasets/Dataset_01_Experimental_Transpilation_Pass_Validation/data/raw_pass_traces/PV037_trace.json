@@ -1,0 +1,20 @@
+{
+  "record_id": "PV037",
+  "circuit_id": "T03",
+  "pass_name": "FixedPoint",
+  "pass_type": "AnalysisPass",
+  "stage": "Circuit Analysis",
+  "execution_time_ms": 0.0,
+  "before": {
+    "gates": 12,
+    "depth": 8
+  },
+  "after": {
+    "gates": 12,
+    "depth": 8
+  },
+  "delta_gates": 0,
+  "delta_depth": 0,
+  "changed_gates": [],
+  "circuit_changed": false
+}

@@ -1,0 +1,20 @@
+{
+  "record_id": "PV185",
+  "circuit_id": "T05",
+  "pass_name": "GatesInBasis",
+  "pass_type": "AnalysisPass",
+  "stage": "Gate Decomposition",
+  "execution_time_ms": 0.0,
+  "before": {
+    "gates": 24,
+    "depth": 15
+  },
+  "after": {
+    "gates": 24,
+    "depth": 15
+  },
+  "delta_gates": 0,
+  "delta_depth": 0,
+  "changed_gates": [],
+  "circuit_changed": false
+}

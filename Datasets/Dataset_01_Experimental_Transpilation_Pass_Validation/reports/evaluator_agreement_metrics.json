@@ -1,0 +1,45 @@
+{
+  "paired_n": 347,
+  "evaluator_1_counts": {
+    "Partially correct": 10,
+    "Incorrect": 4,
+    "Correct": 333
+  },
+  "evaluator_2_counts": {
+    "Partially correct": 12,
+    "Incorrect": 5,
+    "Correct": 330
+  },
+  "cohens_kappa": 0.8328355332883708,
+  "confusion_matrix_labels": [
+    "Correct",
+    "Partially correct",
+    "Incorrect"
+  ],
+  "confusion_matrix": [
+    [
+      329,
+      3,
+      1
+    ],
+    [
+      1,
+      9,
+      0
+    ],
+    [
+      0,
+      0,
+      4
+    ]
+  ],
+  "adjudicated_n": 347,
+  "adjudicated_counts": {
+    "Partially correct": 10,
+    "Incorrect": 5,
+    "Correct": 332
+  },
+  "strict_correct_pct": 95.67723342939482,
+  "partial_pct": 2.881844380403458,
+  "incorrect_pct": 1.440922190201729
+}

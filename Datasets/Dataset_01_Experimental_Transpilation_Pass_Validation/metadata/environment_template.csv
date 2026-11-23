@@ -1,0 +1,2 @@
+﻿platform_version,compiler_name,compiler_version,qiskit_version,python_version,os,cpu,execution_environment,backend_or_synthetic_target,target_configuration_file,capture_date_utc,notes
+Quantum Studio 2.1,Qiskit,1.4.6,1.4.6,3.9.13,Windows 11 Pro 64-bit,Intel Core i7-13700H,Dedicated Experimental Testbed,linear_6 / h_shape_7,metadata/backends.json,2026-11-18T10:00:00Z,Preset pass manager optimization_level=1 with reproducible seeds

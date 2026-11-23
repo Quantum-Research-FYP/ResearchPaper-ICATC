@@ -1,0 +1,38 @@
+circuit_id,hardware_id,source_operation_index,source_operation,target_operation_index,target_operation,physical_qubits,transformation_reason,compiler_or_sdk,compiler_version,validation_status,notes
+HW01,HW_IBM_BRISBANE,1,H(q0),1,rz(pi/2),Q0,Native basis transformation,Qiskit Transpiler,1.4.6,VALIDATED,Euler angle decomposition
+HW01,HW_IBM_BRISBANE,1,H(q0),2,sx,Q0,Native basis transformation,Qiskit Transpiler,1.4.6,VALIDATED,Euler angle decomposition
+HW01,HW_IBM_BRISBANE,1,H(q0),3,rz(pi/2),Q0,Native basis transformation,Qiskit Transpiler,1.4.6,VALIDATED,Euler angle decomposition
+HW01,HW_SPINQ_GEMINI_MINI_PRO,1,H(q0),1,ry(pi/2),Q0,NMR RF pulse sequence,SpinQit Compiler,1.1.2,VALIDATED,pi/2 RF pulse followed by Z phase shift
+HW01,HW_SPINQ_GEMINI_MINI_PRO,1,H(q0),2,rz(pi),Q0,NMR RF pulse sequence,SpinQit Compiler,1.1.2,VALIDATED,Z phase calibration
+HW02,HW_IBM_BRISBANE,1,Ry(pi/2)(q0),1,rz(pi/2),Q0,Native basis transformation,Qiskit Transpiler,1.4.6,VALIDATED,Synthesized via Rz-SX-Rz
+HW02,HW_IBM_BRISBANE,1,Ry(pi/2)(q0),2,sx,Q0,Native basis transformation,Qiskit Transpiler,1.4.6,VALIDATED,Synthesized via Rz-SX-Rz
+HW02,HW_IBM_BRISBANE,1,Ry(pi/2)(q0),3,rz(-pi/2),Q0,Native basis transformation,Qiskit Transpiler,1.4.6,VALIDATED,Synthesized via Rz-SX-Rz
+HW02,HW_SPINQ_GEMINI_MINI_PRO,1,Ry(pi/2)(q0),1,ry(pi/2),Q0,Direct native operation,SpinQit Compiler,1.1.2,VALIDATED,Hardware native RF rotation around Y-axis
+HW03,HW_IBM_BRISBANE,1,X(q0),1,x,Q0,Direct native operation,Qiskit Transpiler,1.4.6,VALIDATED,Hardware native microwave X gate
+HW03,HW_SPINQ_GEMINI_MINI_PRO,1,X(q0),1,rx(pi),Q0,Direct native operation,SpinQit Compiler,1.1.2,VALIDATED,Hardware native pi pulse around X-axis
+HW04,HW_IBM_BRISBANE,1,H(q0),1,rz(pi/2),Q0,Native basis transformation,Qiskit Transpiler,1.4.6,VALIDATED,Euler angle decomposition on Q0
+HW04,HW_IBM_BRISBANE,1,H(q0),2,sx,Q0,Native basis transformation,Qiskit Transpiler,1.4.6,VALIDATED,Euler angle decomposition on Q0
+HW04,HW_IBM_BRISBANE,1,H(q0),3,rz(pi/2),Q0,Native basis transformation,Qiskit Transpiler,1.4.6,VALIDATED,Euler angle decomposition on Q0
+HW04,HW_IBM_BRISBANE,2,CX(q0,q1),4,cx,Q0;Q1,Native hardware edge match,Qiskit Transpiler,1.4.6,VALIDATED,Direct physical coupling edge (0,1)
+HW04,HW_SPINQ_GEMINI_MINI_PRO,1,H(q0),1,ry(pi/2),Q0,NMR RF pulse sequence,SpinQit Compiler,1.1.2,VALIDATED,pi/2 pulse on 1H spin
+HW04,HW_SPINQ_GEMINI_MINI_PRO,1,H(q0),2,rz(pi),Q0,NMR RF pulse sequence,SpinQit Compiler,1.1.2,VALIDATED,Z calibration
+HW04,HW_SPINQ_GEMINI_MINI_PRO,2,CX(q0,q1),3,cx,Q0;Q1,NMR J-coupling sequence,SpinQit Compiler,1.1.2,VALIDATED,Scalar J-coupling evolution with refocusing pulses
+HW05,HW_IBM_BRISBANE,1,H(q1),1,rz(pi/2),Q1,Native basis transformation,Qiskit Transpiler,1.4.6,VALIDATED,Euler angle decomposition on Q1
+HW05,HW_IBM_BRISBANE,1,H(q1),2,sx,Q1,Native basis transformation,Qiskit Transpiler,1.4.6,VALIDATED,Euler angle decomposition on Q1
+HW05,HW_IBM_BRISBANE,1,H(q1),3,rz(pi/2),Q1,Native basis transformation,Qiskit Transpiler,1.4.6,VALIDATED,Euler angle decomposition on Q1
+HW05,HW_IBM_BRISBANE,2,CX(q1,q0),4,h,Q0,Direction reversal conjugation,Qiskit Transpiler,1.4.6,VALIDATED,Hadamard conjugation to reverse directed edge
+HW05,HW_IBM_BRISBANE,2,CX(q1,q0),5,h,Q1,Direction reversal conjugation,Qiskit Transpiler,1.4.6,VALIDATED,Hadamard conjugation to reverse directed edge
+HW05,HW_IBM_BRISBANE,2,CX(q1,q0),6,cx,Q0;Q1,Directed physical edge,Qiskit Transpiler,1.4.6,VALIDATED,Physical edge execution cx(0,1)
+HW05,HW_IBM_BRISBANE,2,CX(q1,q0),7,h,Q0,Direction reversal conjugation,Qiskit Transpiler,1.4.6,VALIDATED,Hadamard conjugation to reverse directed edge
+HW05,HW_IBM_BRISBANE,2,CX(q1,q0),8,h,Q1,Direction reversal conjugation,Qiskit Transpiler,1.4.6,VALIDATED,Hadamard conjugation to reverse directed edge
+HW05,HW_SPINQ_GEMINI_MINI_PRO,1,H(q1),1,ry(pi/2),Q1,NMR RF pulse sequence,SpinQit Compiler,1.1.2,VALIDATED,pi/2 pulse on 31P spin
+HW05,HW_SPINQ_GEMINI_MINI_PRO,1,H(q1),2,rz(pi),Q1,NMR RF pulse sequence,SpinQit Compiler,1.1.2,VALIDATED,Z calibration
+HW05,HW_SPINQ_GEMINI_MINI_PRO,2,CX(q1,q0),3,cx,Q1;Q0,Symmetric NMR J-coupling,SpinQit Compiler,1.1.2,VALIDATED,Bidirectional scalar coupling J_z
+HW06,HW_IBM_BRISBANE,1,Ry(pi/4)(q0),1,rz(pi/2),Q0,Native basis transformation,Qiskit Transpiler,1.4.6,VALIDATED,Synthesized via Rz-SX-Rz
+HW06,HW_IBM_BRISBANE,1,Ry(pi/4)(q0),2,sx,Q0,Native basis transformation,Qiskit Transpiler,1.4.6,VALIDATED,Synthesized via Rz-SX-Rz
+HW06,HW_IBM_BRISBANE,1,Ry(pi/4)(q0),3,rz(-pi/4),Q0,Native basis transformation,Qiskit Transpiler,1.4.6,VALIDATED,Synthesized via Rz-SX-Rz
+HW06,HW_IBM_BRISBANE,2,CX(q0,q1),4,cx,Q0;Q1,Native hardware edge match,Qiskit Transpiler,1.4.6,VALIDATED,Direct physical coupling edge (0,1)
+HW06,HW_SPINQ_GEMINI_MINI_PRO,1,Ry(pi/4)(q0),1,ry(pi/4),Q0,Direct native operation,SpinQit Compiler,1.1.2,VALIDATED,Hardware native RF rotation around Y-axis
+HW06,HW_SPINQ_GEMINI_MINI_PRO,2,CX(q0,q1),2,cx,Q0;Q1,NMR J-coupling sequence,SpinQit Compiler,1.1.2,VALIDATED,Scalar J-coupling evolution with refocusing pulses
+HW07,HW_IBM_BRISBANE,1,H(q0);CX(q0,q1);CX(q1,q2),1,cx,Q0;Q1;Q2,Heavy-hex 3-qubit routing,Qiskit Transpiler,1.4.6,VALIDATED,Mapped to connected path Q0-Q1-Q2
+HW07,HW_SPINQ_GEMINI_MINI_PRO,1,Circuit,0,NONE,NONE,UNSUPPORTED_PHYSICAL_QUBIT_LIMIT,SpinQit Compiler,1.1.2,REJECTED,Device has 2 physical qubits; cannot allocate 3 qubits

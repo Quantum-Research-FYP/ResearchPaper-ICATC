@@ -1,0 +1,27 @@
+{
+  "record_id": "PV114",
+  "circuit_id": "T22",
+  "pass_name": "BasisTranslator",
+  "pass_type": "TransformationPass",
+  "stage": "Gate Decomposition",
+  "execution_time_ms": 3.0159950256347656,
+  "before": {
+    "gates": 15,
+    "depth": 11
+  },
+  "after": {
+    "gates": 57,
+    "depth": 38
+  },
+  "delta_gates": 42,
+  "delta_depth": 27,
+  "changed_gates": [
+    "cp: -6",
+    "cx: +27",
+    "h: -4",
+    "rz: +26",
+    "swap: -5",
+    "sx: +4"
+  ],
+  "circuit_changed": true
+}

@@ -1,0 +1,7 @@
+﻿transpilation_stage,total_transformations,correct_explanations,partially_correct,incorrect_explanations,strict_accuracy_pct,lenient_accuracy_pct
+Circuit Analysis,67,67,0,0,100.0,100.0
+Qubit Mapping,34,32,2,0,94.1,100.0
+Gate Decomposition,99,93,4,2,93.9,98.0
+Optimization,114,107,4,3,93.9,97.4
+Routing & Ancilla,33,33,0,0,100.0,100.0
+Overall (All Stages),347,332,10,5,95.7,98.6

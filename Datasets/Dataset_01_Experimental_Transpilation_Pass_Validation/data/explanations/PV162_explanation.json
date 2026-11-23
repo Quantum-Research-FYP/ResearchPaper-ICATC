@@ -1,0 +1,11 @@
+{
+  "explanation_id": "EXP_PV162",
+  "record_id": "PV162",
+  "pass_name": "BarrierBeforeFinalMeasurements",
+  "stage": "Gate Decomposition",
+  "purpose": "Inserts a barrier instruction before all measurement operations.",
+  "rationale": "Ensures the compiler does not reorder gates across measurement boundaries, which could change measurement semantics.",
+  "pipeline_reason": "Added as a correctness constraint during the translation/decomposition stage.",
+  "engine_version": "QuantumStudio-TranspileEngine-v2.1",
+  "timestamp_utc": "2026-11-18T10:00:00Z"
+}

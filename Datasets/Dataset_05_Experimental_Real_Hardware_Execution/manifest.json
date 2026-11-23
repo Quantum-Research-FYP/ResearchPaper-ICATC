@@ -1,0 +1,78 @@
+{
+  "dataset_id": "Dataset_05_Experimental_Real_Hardware_Execution",
+  "name": "IBM Quantum & SpinQ Gemini Mini Pro Physical Execution Benchmark",
+  "version": "2.0.0-experimental",
+  "date_created": "2026-11-19",
+  "hardware_targets": [
+    {
+      "hardware_id": "HW_IBM_BRISBANE",
+      "platform": "IBM Quantum",
+      "model": "Eagle r3 (127 qubits)",
+      "connectivity": "Heavy-hex",
+      "native_gates": ["cx", "id", "rz", "sx", "x"]
+    },
+    {
+      "hardware_id": "HW_SPINQ_GEMINI_MINI_PRO",
+      "platform": "SpinQ Technology",
+      "model": "Gemini Mini Pro (2 qubits)",
+      "connectivity": "All-to-all NMR J-coupling",
+      "native_gates": ["rx", "ry", "rz", "jz", "cx"]
+    }
+  ],
+  "benchmark_summary": {
+    "total_circuits_tested": 6,
+    "boundary_circuits_tested": 1,
+    "repetitions_per_supported_circuit": 3,
+    "shots_per_run": 1024,
+    "ibm_total_completed_runs": 21,
+    "spinq_total_completed_runs": 18,
+    "spinq_unsupported_circuits": 1
+  },
+  "files": [
+    {
+      "filepath": "metadata/circuit_catalogue.csv",
+      "description": "Six proposed hardware test circuits plus 3-qubit boundary circuit",
+      "row_count": 7
+    },
+    {
+      "filepath": "metadata/device_profiles_experimental.csv",
+      "description": "Complete physical specifications for IBM Brisbane and SpinQ Gemini Mini Pro",
+      "row_count": 2
+    },
+    {
+      "filepath": "metadata/experiment_plan.csv",
+      "description": "Planned vs completed experiments matrix",
+      "row_count": 14
+    },
+    {
+      "filepath": "metadata/compilation_traces_experimental.csv",
+      "description": "Native gate decomposition and routing traces",
+      "row_count": 36
+    },
+    {
+      "filepath": "metadata/execution_log_experimental.csv",
+      "description": "Provider job logs, timestamps, queue times, and run durations",
+      "row_count": 40
+    },
+    {
+      "filepath": "metadata/measurement_counts_experimental.csv",
+      "description": "Raw hardware measurement counts per computational basis state",
+      "row_count": 132
+    },
+    {
+      "filepath": "metadata/ideal_reference_distributions.csv",
+      "description": "Exact ideal statevector reference probabilities",
+      "row_count": 26
+    },
+    {
+      "filepath": "metadata/hardware_execution_tvd_results.csv",
+      "description": "Per-execution Total Variation Distance results",
+      "row_count": 132
+    },
+    {
+      "filepath": "metadata/hardware_tvd_summary.csv",
+      "description": "Consolidated summary metrics by circuit and hardware platform",
+      "row_count": 14
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "explanation_id": "EXP_PV073",
+  "record_id": "PV073",
+  "pass_name": "SabreLayout",
+  "stage": "Qubit Mapping",
+  "purpose": "Finds a high-quality initial mapping of logical qubits to physical hardware qubits.",
+  "rationale": "A good initial placement minimizes the number of SWAP gates required later. SABRE uses a heuristic look-ahead algorithm to find near-optimal placements.",
+  "pipeline_reason": "This is the default layout (qubit placement) strategy selected by the current transpiler configuration.",
+  "engine_version": "QuantumStudio-TranspileEngine-v2.1",
+  "timestamp_utc": "2026-11-18T10:00:00Z"
+}

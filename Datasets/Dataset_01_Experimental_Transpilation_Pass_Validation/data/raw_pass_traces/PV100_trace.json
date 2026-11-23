@@ -1,0 +1,20 @@
+{
+  "record_id": "PV100",
+  "circuit_id": "T28",
+  "pass_name": "SetLayout",
+  "pass_type": "AnalysisPass",
+  "stage": "Qubit Mapping",
+  "execution_time_ms": 1.0061264038085938,
+  "before": {
+    "gates": 5,
+    "depth": 4
+  },
+  "after": {
+    "gates": 5,
+    "depth": 4
+  },
+  "delta_gates": 0,
+  "delta_depth": 0,
+  "changed_gates": [],
+  "circuit_changed": false
+}

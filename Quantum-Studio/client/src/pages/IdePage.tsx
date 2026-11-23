@@ -1,0 +1,1764 @@
+import { useState, useCallback, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import EditorPanel from '../components/ide/EditorPanel';
+import { useExecution } from '../hooks/useExecution';
+import { useAuth } from '../hooks/useAuth';
+import {
+  getProviders,
+  listIbmBackends,
+  submitExecutionJob,
+  type ExecutionProvider,
+  type IbmBackend,
+} from '../api/execution';
+import { getIbmSettings } from '../api/integrations';
+import {
+  getGitHubStatus,
+  listGitHubRepos,
+  pushToGitHub,
+  type GitHubStatus,
+  type GitHubRepo,
+} from '../api/github';
+import ProbabilityBarChart from '../components/results/ProbabilityBarChart';
+import ResultsTable from '../components/results/ResultsTable';
+import { PerformanceAnalysisPanel } from '../components/results/PerformanceAnalysisPanel';
+import { analyzeCircuit } from '../api/simulations';
+import type { NoiseConfig, AnalyzeResponse } from '../api/simulations';
+import { TranspilationPanel } from '../components/results/TranspilationPanel';
+
+export const FRAMEWORKS = [
+  { id: 'qiskit', name: 'Qiskit', file: 'qiskit.py', type: 'python',
+    template: `from qiskit import QuantumCircuit\n\nqc = QuantumCircuit(2, 2)\nqc.h(0)\nqc.cx(0, 1)\nqc.measure([0, 1], [0, 1])\n` },
+  { id: 'spinqit', name: 'SpinQit', file: 'spinqit.py', type: 'python',
+    template: `from spinqit import Circuit, get_basic_simulator, get_compiler, BasicSimulatorConfig\nfrom spinqit import H, CX\n\ncirc = Circuit()\nq = circ.allocateQubits(2)\ncirc << (H, q[0])\ncirc << (CX, (q[0], q[1]))\n\n# Choose the compiler and backend\ncomp = get_compiler("native")\nengine = get_basic_simulator()\n\n# Compile\nexe = comp.compile(circ, 0)\n\n# Run\nconfig = BasicSimulatorConfig()\nconfig.configure_shots(1024)\nresult = engine.execute(exe, config)\ncounts = result.counts\n` },
+  { id: 'cirq', name: 'Cirq', file: 'cirq.py', type: 'python',
+    template: `import cirq\n\nq0 = cirq.GridQubit(0, 0)\nq1 = cirq.GridQubit(0, 1)\ncircuit = cirq.Circuit(\n    cirq.H(q0),\n    cirq.CNOT(q0, q1),\n    cirq.measure(q0, key='m0'),\n    cirq.measure(q1, key='m1')\n)\n\nsimulator = cirq.Simulator()\nresult = simulator.run(circuit, repetitions=1024)\n\n# Convert Cirq result to 'counts' dict for the platform\ncounts_raw = result.multi_measurement_histogram(keys=['m0', 'm1'])\ncounts = {f"{k[0]}{k[1]}": v for k, v in counts_raw.items()}\n` },
+  { id: 'pennylane', name: 'PennyLane', file: 'pennylane.py', type: 'python',
+    template: `import pennylane as qml\n\ndev = qml.device("default.qubit", wires=2, shots=1024)\n\n@qml.qnode(dev)\ndef circuit():\n    qml.Hadamard(wires=0)\n    qml.CNOT(wires=[0, 1])\n    return qml.counts()\n\n# Get results in the expected 'counts' format\ncounts_raw = circuit()\ncounts = {str(k): int(v) for k, v in counts_raw.items()}\n` },
+  { id: 'braket', name: 'Amazon Braket', file: 'braket.py', type: 'python',
+    template: `from braket.circuits import Circuit\nfrom braket.devices import LocalSimulator\n\ncircuit = Circuit().h(0).cnot(0, 1)\n\ndevice = LocalSimulator()\nresult = device.run(circuit, shots=1024).result()\n\n# Expose counts for the platform\ncounts_raw = result.measurement_counts\ncounts = {k: int(v) for k, v in counts_raw.items()}\n` },
+  { id: 'tket', name: 'TKET', file: 'tket.py', type: 'python',
+    template: `from pytket import Circuit\nfrom pytket.extensions.qiskit import AerBackend\n\ncirc = Circuit(2, 2)\ncirc.H(0)\ncirc.CX(0, 1)\ncirc.Measure(0, 0)\ncirc.Measure(1, 1)\n\nbackend = AerBackend()\ncompiled_circ = backend.get_compiled_circuit(circ)\nresult = backend.run_circuit(compiled_circ, n_shots=1024)\n\n# Extract counts into standard format\ncounts_raw = result.get_counts()\ncounts = {f"{k[0]}{k[1]}": v for k, v in counts_raw.items()}\n` },
+  { id: 'openqasm', name: 'OpenQASM', file: 'circuit.qasm', type: 'qasm',
+    template: `OPENQASM 2.0;\ninclude "qelib1.inc";\n\nqreg q[2];\ncreg c[2];\n\nh q[0];\ncx q[0], q[1];\nmeasure q[0] -> c[0];\nmeasure q[1] -> c[1];\n` },
+];
+
+/* ------------------------------------------------------------------ */
+/* Explorer Sub-Components                                              */
+/* ------------------------------------------------------------------ */
+
+const PythonIcon = () => (
+  <svg viewBox="0 0 128 128" width="16" height="16" style={{ flexShrink: 0 }}>
+    <path
+      fill="#4B8BBE"
+      d="M64 6.7c-31.5 0-30.2 13.5-30.2 13.5l.1 14h30.8v4.4H33.3s-14.1-.7-14.1 13.9 14.1 14.7 14.1 14.7h9.5v-13.4s-.3-14.7 14.3-14.7h18.2s13.4.1 13.4-13.7V12.1S88.6 6.7 64 6.7zm-14.8 8.6c2.8 0 5 2.2 5 5s-2.2 5-5 5-5-2.2-5-5 2.2-5 5-5z"
+    />
+    <path
+      fill="#FFD43B"
+      d="M64 121.3c31.5 0 30.2-13.5 30.2-13.5l-.1-14H63.2v-4.4h31.4s14.1.7 14.1-13.9-14.1-14.7-14.1-14.7h-9.5v13.4s.3 14.7-14.3 14.7H52.5s-13.4-.1-13.4 13.7v13.3s.1 14.6 24.9 14.6zm14.8-8.6c-2.8 0-5-2.2-5-5s2.2-5 5-5 5 2.2 5 5-2.2 5-5 5z"
+    />
+  </svg>
+);
+
+const QasmIcon = () => (
+  <svg
+    viewBox="0 0 24 24"
+    width="16"
+    height="16"
+    fill="none"
+    stroke="var(--color-success)"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ flexShrink: 0 }}
+  >
+    <polyline points="16 18 22 12 16 6" />
+    <polyline points="8 6 2 12 8 18" />
+  </svg>
+);
+
+const FolderIcon = ({ open }: { open: boolean }) => (
+  <svg
+    viewBox="0 0 24 24"
+    width="16"
+    height="16"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{ color: '#fbbf24', flexShrink: 0 }}
+  >
+    {open ? (
+      <path d="M3 5v14c0 1.1.9 2 2 2h14a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-6l-2-2H5a2 2 0 0 0-2 2z" />
+    ) : (
+      <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
+    )}
+  </svg>
+);
+
+const ChevronIcon = ({ open }: { open: boolean }) => (
+  <svg
+    viewBox="0 0 24 24"
+    width="14"
+    height="14"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    style={{
+      transform: open ? 'rotate(90deg)' : 'none',
+      transition: 'transform 0.1s',
+      color: 'var(--color-text-subtle)',
+      flexShrink: 0,
+    }}
+  >
+    <polyline points="9 18 15 12 9 6" />
+  </svg>
+);
+
+
+function FileItem({
+  name,
+  active,
+  onClick,
+  onDelete,
+  icon,
+}: {
+  name: string;
+  active: boolean;
+  onClick: () => void;
+  onDelete?: () => void;
+  icon: React.ReactNode;
+}) {
+  const [hover, setHover] = useState(false);
+  return (
+    <div
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+      onClick={onClick}
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        padding: '6px 16px 6px 36px',
+        cursor: 'pointer',
+        fontSize: '0.85rem',
+        userSelect: 'none',
+        backgroundColor: active ? 'var(--color-primary-dim)' : hover ? 'var(--color-surface-3)' : 'transparent',
+        color: active ? 'var(--color-text)' : hover ? 'var(--color-text)' : 'var(--color-text-muted)',
+        borderLeft: active ? '2px solid var(--color-primary)' : '2px solid transparent',
+      }}
+    >
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        {icon}
+        <span>{name}</span>
+      </div>
+      {onDelete && hover && (
+        <button
+          onClick={(e) => { e.stopPropagation(); onDelete(); }}
+          style={{ background: 'none', border: 'none', color: 'var(--color-text-muted)', cursor: 'pointer', padding: '0 4px', fontSize: '1.1rem', lineHeight: '1', borderRadius: '4px' }}
+          onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--color-error)')}
+          onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--color-text-muted)')}
+        >
+          ×
+        </button>
+      )}
+    </div>
+  );
+}
+
+function FolderItem({
+  name,
+  active,
+  isRenaming,
+  onSelect,
+  onRename,
+  onDelete,
+  children
+}: {
+  name: string;
+  active: boolean;
+  isRenaming: boolean;
+  onSelect: () => void;
+  onRename: (newName: string) => void;
+  onDelete: () => void;
+  children: React.ReactNode;
+}) {
+  const [hover, setHover] = useState(false);
+  const [renameVal, setRenameVal] = useState(name);
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column' }}>
+      <div
+        onMouseEnter={() => setHover(true)}
+        onMouseLeave={() => setHover(false)}
+        onClick={onSelect}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          padding: '6px 16px 6px 32px', // Indented under Quantum-Project
+          cursor: 'pointer',
+          fontSize: '0.85rem',
+          userSelect: 'none',
+          backgroundColor: active ? 'var(--color-primary-dim)' : hover ? 'var(--color-surface-3)' : 'transparent',
+          color: active ? 'var(--color-text)' : hover ? 'var(--color-text)' : 'var(--color-text-muted)',
+          borderLeft: active ? '2px solid var(--color-primary)' : '2px solid transparent',
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <FolderIcon open={true} />
+          {isRenaming ? (
+            <input
+              autoFocus
+              value={renameVal}
+              onChange={(e) => setRenameVal(e.target.value)}
+              onBlur={() => onRename(renameVal)}
+              onKeyDown={(e) => { if (e.key === 'Enter') onRename(renameVal); if (e.key === 'Escape') onRename(name); }}
+              onClick={(e) => e.stopPropagation()}
+              style={{ background: 'var(--color-surface-1)', color: 'var(--color-text)', border: '1px solid var(--color-primary)', borderRadius: '4px', padding: '2px 6px', fontSize: '0.85rem', outline: 'none', width: '120px' }}
+            />
+          ) : (
+            <span>{name}</span>
+          )}
+        </div>
+        {hover && !isRenaming && (
+          <button
+            onClick={(e) => { e.stopPropagation(); onDelete(); }}
+            style={{ background: 'none', border: 'none', color: 'var(--color-text-muted)', cursor: 'pointer', padding: '0 4px', fontSize: '1.1rem', lineHeight: '1' }}
+            onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--color-error)')}
+            onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--color-text-muted)')}
+          >
+            ×
+          </button>
+        )}
+      </div>
+      {children && <div style={{ display: 'flex', flexDirection: 'column', paddingLeft: '16px' }}>{children}</div>}
+    </div>
+  );
+}
+
+function FileExplorer({
+  activeFile,
+  files,
+  folders,
+  selectedFolder,
+  renamingFolder,
+  onSelectFile,
+  onSelectFolder,
+  onAddFile,
+  onAddFolder,
+  onRenameFolder,
+  onDeleteFile,
+  onDeleteFolder,
+}: {
+  activeFile: string;
+  files: Record<string, string>;
+  folders: string[];
+  selectedFolder: string;
+  renamingFolder: string | null;
+  onSelectFile: (f: string) => void;
+  onSelectFolder: (f: string) => void;
+  onAddFile: (fwId: string, template: string) => void;
+  onAddFolder: () => void;
+  onRenameFolder: (oldPath: string, newPath: string) => void;
+  onDeleteFile: (f: string) => void;
+  onDeleteFolder: (f: string) => void;
+}) {
+  const [srcOpen, setSrcOpen] = useState(true);
+  const [addMenuOpen, setAddMenuOpen] = useState(false);
+
+  const rootFiles = Object.keys(files).filter(f => !f.includes('/'));
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', paddingBottom: '12px', borderBottom: '1px solid var(--color-border)' }}>
+      <div style={{ padding: '16px 16px 12px', fontSize: '0.75rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', color: 'var(--color-text-subtle)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <span>Explorer</span>
+        <div style={{ display: 'flex', gap: '4px', position: 'relative' }}>
+          <button
+            onClick={() => setAddMenuOpen(!addMenuOpen)}
+            title="New File"
+            style={{ background: 'none', border: 'none', color: 'var(--color-text-muted)', cursor: 'pointer', fontSize: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center', width: '24px', height: '24px', padding: 0 }}
+          >
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+              <path d="M13.85 4.44l-3.28-3.3-.35-.14H4.5l-.5.5v13l.5.5h10l.5-.5V4.8l-.15-.36zM10 2.2l2.8 2.8H10V2.2zM14 14H5V2h4v4h4v8zM8.5 7h-1v2h-2v1h2v2h1v-2h2V9h-2V7z"/>
+            </svg>
+          </button>
+          <button
+            onClick={onAddFolder}
+            title="New Folder"
+            style={{ background: 'none', border: 'none', color: 'var(--color-text-muted)', cursor: 'pointer', fontSize: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center', width: '24px', height: '24px', padding: 0 }}
+          >
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+              <path d="M14.5 4h-5.4l-1.7-1.7-.3-.3H3.5l-.5.5v10l.5.5h11l.5-.5V4.5l-.5-.5zM4 3h2.6l1.7 1.7.3.3h5.4v1H4V3zm10 11H4V7h10v7zm-3.5-5h-2V7h-1v2h-2v1h2v2h1v-2h2V9z"/>
+            </svg>
+          </button>
+          
+          {addMenuOpen && (
+            <div style={{ position: 'absolute', top: '100%', right: 0, marginTop: '4px', backgroundColor: 'var(--color-surface-2)', border: '1px solid var(--color-border)', borderRadius: '6px', boxShadow: '0 4px 12px rgba(0,0,0,0.2)', zIndex: 10, minWidth: '150px', overflow: 'hidden' }}>
+              {FRAMEWORKS.map((fw) => (
+                <div
+                  key={fw.id}
+                  onClick={() => { onAddFile(fw.id, fw.template); setAddMenuOpen(false); }}
+                  style={{ padding: '8px 12px', fontSize: '0.85rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--color-text)' }}
+                  onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = 'var(--color-surface-3)')}
+                  onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
+                >
+                  <span style={{ width: '12px', display: 'inline-block' }}></span>
+                  {fw.name}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+
+      <div
+        onClick={() => { setSrcOpen(!srcOpen); onSelectFolder(''); }}
+        style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '6px 16px', cursor: 'pointer', color: 'var(--color-text-muted)', fontSize: '0.85rem', userSelect: 'none', backgroundColor: selectedFolder === '' ? 'var(--color-surface-3)' : 'transparent' }}
+      >
+        <ChevronIcon open={srcOpen} />
+        <FolderIcon open={srcOpen} />
+        <span style={{ fontWeight: 500, letterSpacing: '0.02em' }}>Quantum-Project</span>
+      </div>
+
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '1px', marginTop: '2px', overflow: 'hidden', height: srcOpen ? 'auto' : 0 }}>
+        {folders.map(folder => (
+          <FolderItem
+            key={folder}
+            name={folder}
+            active={selectedFolder === folder}
+            isRenaming={renamingFolder === folder}
+            onSelect={() => onSelectFolder(folder)}
+            onRename={(newName) => onRenameFolder(folder, newName)}
+            onDelete={() => onDeleteFolder(folder)}
+          >
+            {Object.keys(files).filter(f => f.startsWith(folder + '/') && f.substring(folder.length + 1).indexOf('/') === -1).map(filename => (
+              <FileItem
+                key={filename}
+                name={filename.substring(folder.length + 1)}
+                active={activeFile === filename}
+                onClick={() => onSelectFile(filename)}
+                onDelete={() => onDeleteFile(filename)}
+                icon={filename.endsWith('.qasm') ? <QasmIcon /> : <PythonIcon />}
+              />
+            ))}
+          </FolderItem>
+        ))}
+        {rootFiles.map((filename) => (
+          <FileItem
+            key={filename}
+            name={filename}
+            active={activeFile === filename}
+            onClick={() => onSelectFile(filename)}
+            onDelete={() => onDeleteFile(filename)}
+            icon={filename.endsWith('.qasm') ? <QasmIcon /> : <PythonIcon />}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/* Page Component                                                       */
+/* ------------------------------------------------------------------ */
+
+export default function IdePage() {
+  const { user } = useAuth();
+
+  // File state
+  const defaultFw = FRAMEWORKS.find(f => f.id === 'qiskit')!;
+  const [activeFile, setActiveFile] = useState<string>(() => {
+    const saved = localStorage.getItem('ide_activeFile');
+    return saved || defaultFw.file;
+  });
+  const [files, setFiles] = useState<Record<string, string>>(() => {
+    const saved = localStorage.getItem('ide_files');
+    return saved ? JSON.parse(saved) : { [defaultFw.file]: defaultFw.template };
+  });
+  const [folders, setFolders] = useState<string[]>(() => {
+    const saved = localStorage.getItem('ide_folders');
+    return saved ? JSON.parse(saved) : [];
+  });
+  const [selectedFolder, setSelectedFolder] = useState<string>('');
+  const [renamingFolder, setRenamingFolder] = useState<string | null>(null);
+
+  useEffect(() => {
+    localStorage.setItem('ide_activeFile', activeFile);
+  }, [activeFile]);
+
+  useEffect(() => {
+    localStorage.setItem('ide_files', JSON.stringify(files));
+  }, [files]);
+
+  useEffect(() => {
+    localStorage.setItem('ide_folders', JSON.stringify(folders));
+  }, [folders]);
+
+  const handleResetFile = () => {
+    if (window.confirm(`Are you sure you want to reset ${activeFile}?`)) {
+      // Find if it's an original framework file to restore its template
+      const fwMatch = FRAMEWORKS.find(f => f.file === activeFile);
+      const defaultContent = fwMatch ? fwMatch.template : '';
+      
+      setFiles(prev => ({ ...prev, [activeFile]: defaultContent }));
+    }
+  };
+
+  // Settings State
+  const [shots, setShots] = useState(1024);
+  const [providers, setProviders] = useState<ExecutionProvider[]>([]);
+  const [selectedProvider, setSelectedProvider] = useState<'simulator' | 'ibm_quantum' | 'spinq'>(
+    'simulator',
+  );
+  const [ibmBackends, setIbmBackends] = useState<IbmBackend[]>([]);
+  const [selectedBackend, setSelectedBackend] = useState('');
+  const [credentialStatus, setCredentialStatus] = useState<
+    'unknown' | 'missing' | 'invalid' | 'valid'
+  >('unknown');
+
+  // Noise Settings
+  const [noiseEnabled, setNoiseEnabled] = useState(false);
+  const [noiseConfig, setNoiseConfig] = useState<NoiseConfig>({
+    depolarizing: 0,
+    bitFlip: 0,
+    phaseFlip: 0,
+    amplitudeDamping: 0,
+    phaseDamping: 0,
+    readoutError: 0,
+    crosstalk: 0,
+  });
+
+  // Bottom panel tabs
+  const [bottomTab, setBottomTab] = useState<'terminal' | 'results' | 'analysis' | 'transpile'>(
+    'terminal',
+  );
+
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [analyzeResult, setAnalyzeResult] = useState<AnalyzeResponse | null>(null);
+
+  const execution = useExecution();
+  const [editorError, setEditorError] = useState<{ line?: number; message: string } | null>(null);
+
+  useEffect(() => {
+    getProviders()
+      .then((data) => {
+        setProviders(data.providers);
+        if (!user) setSelectedProvider('simulator');
+      })
+      .catch(() => setProviders([{ id: 'simulator', name: 'Simulator', available: true }]));
+  }, [user]);
+
+  useEffect(() => {
+    if (!user) return;
+    getIbmSettings()
+      .then((settings) => {
+        setCredentialStatus(settings.validationStatus === 'invalid' ? 'invalid' : 'valid');
+      })
+      .catch(() => {
+        setCredentialStatus('missing');
+      });
+  }, [user]);
+
+  useEffect(() => {
+    if (selectedProvider !== 'ibm_quantum' || credentialStatus !== 'valid' || !user) return;
+
+    let cancelled = false;
+    listIbmBackends()
+      .then((data) => {
+        if (cancelled) return;
+        setIbmBackends(data.backends);
+        if (data.backends.length > 0 && !selectedBackend) {
+          const online = data.backends.find((b) => b.status === 'online');
+          setSelectedBackend(online?.name || data.backends[0].name);
+        }
+      })
+      .catch(() => {
+        if (cancelled) return;
+        setCredentialStatus('missing');
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [selectedProvider, credentialStatus, user, selectedBackend]);
+
+  // --- GitHub push state ---
+  const [ghStatus, setGhStatus] = useState<GitHubStatus | null>(null);
+  const [showGhPush, setShowGhPush] = useState(false);
+  const [ghRepos, setGhRepos] = useState<GitHubRepo[]>([]);
+  const [ghReposLoading, setGhReposLoading] = useState(false);
+  const [ghSelectedRepo, setGhSelectedRepo] = useState('');
+  const [ghFilePath, setGhFilePath] = useState('');
+  const [ghCommitMsg, setGhCommitMsg] = useState('');
+  const [ghPushing, setGhPushing] = useState(false);
+  const [ghPushResult, setGhPushResult] = useState<{
+    type: 'success' | 'error';
+    text: string;
+    url?: string;
+  } | null>(null);
+
+  // Load GitHub status
+  useEffect(() => {
+    if (!user) return;
+    getGitHubStatus()
+      .then((s) => setGhStatus(s))
+      .catch(() => setGhStatus(null));
+  }, [user]);
+
+  // GitHub push dialog open handler
+  const openGhPush = useCallback(async () => {
+    setShowGhPush(true);
+    setGhPushResult(null);
+    setGhFilePath(activeFile);
+    setGhCommitMsg(`Update ${activeFile} via Quantum Studio`);
+    setGhReposLoading(true);
+    try {
+      const data = await listGitHubRepos();
+      setGhRepos(data.repos);
+      if (data.repos.length > 0 && !ghSelectedRepo) {
+        setGhSelectedRepo(data.repos[0].fullName);
+      }
+    } catch {
+      setGhRepos([]);
+    } finally {
+      setGhReposLoading(false);
+    }
+  }, [activeFile, ghSelectedRepo]);
+
+  const handleGhPush = useCallback(async () => {
+    if (!ghSelectedRepo || !ghFilePath.trim()) return;
+    setGhPushing(true);
+    setGhPushResult(null);
+    try {
+      const [owner, repo] = ghSelectedRepo.split('/');
+      const result = await pushToGitHub(
+        owner,
+        repo,
+        ghFilePath.trim(),
+        files[activeFile],
+        ghCommitMsg || undefined,
+      );
+      setGhPushResult({
+        type: 'success',
+        text: `Pushed successfully! Commit: ${result.sha.slice(0, 7)}`,
+        url: result.htmlUrl,
+      });
+    } catch (err: unknown) {
+      setGhPushResult({ type: 'error', text: err instanceof Error ? err.message : 'Push failed.' });
+    } finally {
+      setGhPushing(false);
+    }
+  }, [ghSelectedRepo, ghFilePath, ghCommitMsg, files, activeFile]);
+
+  const ibmAvailable = providers.some((p) => p.id === 'ibm_quantum' && p.available);
+
+  const handleFileChange = (file: string) => {
+    setActiveFile(file);
+    setEditorError(null);
+    if (selectedProvider === 'ibm_quantum' && !file.toLowerCase().includes('qiskit') && !file.toLowerCase().endsWith('.qasm')) {
+      setSelectedProvider('simulator');
+    } else if (selectedProvider === 'spinq' && !file.toLowerCase().includes('spinqit')) {
+      setSelectedProvider('simulator');
+    }
+  };
+
+  const handleSelectFolder = (folder: string) => {
+    setSelectedFolder(folder);
+  };
+
+  const handleAddFolder = () => {
+    let newFolderName = 'New Folder';
+    let i = 1;
+    while (folders.includes(newFolderName)) {
+      newFolderName = `New Folder ${i}`;
+      i++;
+    }
+    setFolders(prev => [...prev, newFolderName]);
+    setRenamingFolder(newFolderName);
+    setSelectedFolder(newFolderName);
+  };
+
+  const handleRenameFolder = (oldPath: string, newPath: string) => {
+    if (!newPath || newPath === oldPath || folders.includes(newPath)) {
+      setRenamingFolder(null);
+      return;
+    }
+    setFolders(prev => prev.map(f => f === oldPath ? newPath : f));
+    setFiles(prev => {
+      const next = { ...prev };
+      for (const [key, val] of Object.entries(next)) {
+        if (key.startsWith(oldPath + '/')) {
+          next[newPath + '/' + key.substring(oldPath.length + 1)] = val;
+          delete next[key];
+        }
+      }
+      return next;
+    });
+    if (selectedFolder === oldPath) {
+      setSelectedFolder(newPath);
+    }
+    if (activeFile.startsWith(oldPath + '/')) {
+      setActiveFile(newPath + '/' + activeFile.substring(oldPath.length + 1));
+    }
+    setRenamingFolder(null);
+  };
+
+  const handleDeleteFolder = (folderPath: string) => {
+    setFolders(prev => prev.filter(f => f !== folderPath));
+    setFiles(prev => {
+      const next = { ...prev };
+      for (const key of Object.keys(next)) {
+        if (key.startsWith(folderPath + '/')) {
+          delete next[key];
+        }
+      }
+      return next;
+    });
+    if (selectedFolder === folderPath) {
+      setSelectedFolder('');
+    }
+    if (activeFile.startsWith(folderPath + '/')) {
+      setActiveFile('');
+    }
+  };
+
+  const handleAddFile = (fwId: string, template: string) => {
+    const fw = FRAMEWORKS.find(f => f.id === fwId);
+    if (!fw) return;
+    const ext = fw.file.includes('.') ? fw.file.substring(fw.file.lastIndexOf('.')) : '';
+    const baseName = fw.file.includes('.') ? fw.file.substring(0, fw.file.lastIndexOf('.')) : fw.file;
+
+    let newName = selectedFolder ? `${selectedFolder}/${fw.file}` : fw.file;
+    let i = 1;
+    while (files[newName] !== undefined) {
+      newName = selectedFolder ? `${selectedFolder}/${baseName}_${i}${ext}` : `${baseName}_${i}${ext}`;
+      i++;
+    }
+    
+    setFiles(prev => ({ ...prev, [newName]: template }));
+    setActiveFile(newName);
+    setEditorError(null);
+  };
+
+  const handleDeleteFile = (file: string) => {
+    setFiles((prev) => {
+      const newFiles = { ...prev };
+      delete newFiles[file];
+      if (activeFile === file) {
+        const remaining = Object.keys(newFiles);
+        if (remaining.length > 0) {
+          setActiveFile(remaining[0]);
+        } else {
+          setActiveFile('');
+        }
+      }
+      return newFiles;
+    });
+  };
+
+  const handleCodeChange = (newCode: string | undefined) => {
+    setFiles((prev) => ({ ...prev, [activeFile]: newCode || '' }));
+  };
+
+  const handleRun = useCallback(async () => {
+    setEditorError(null);
+    execution.reset();
+    setAnalyzeResult(null);
+    setBottomTab('terminal'); // Switch to terminal on run
+    const codeType = activeFile.endsWith('.qasm') ? 'qasm' : 'python';
+
+    // Clean noiseConfig to only include >0 values if enabled
+    let finalNoiseConfig = undefined;
+    if (noiseEnabled && selectedProvider === 'simulator') {
+      const cleaned: Partial<NoiseConfig> = {};
+      (Object.entries(noiseConfig) as [keyof NoiseConfig, unknown][]).forEach(([key, val]) => {
+        if (typeof val === 'number' && val > 0) {
+          (cleaned as Record<string, unknown>)[key] = val;
+        }
+      });
+      if (Object.keys(cleaned).length > 0) {
+        finalNoiseConfig = cleaned;
+      }
+    }
+
+    try {
+      const job = await submitExecutionJob({
+        provider: selectedProvider,
+        backend: selectedProvider === 'ibm_quantum' ? selectedBackend : undefined,
+        qasm: files[activeFile],
+        shots,
+        codeType,
+        noiseConfig: finalNoiseConfig,
+      });
+      execution.loadJob(job.jobId);
+    } catch (err: unknown) {
+      setEditorError({ message: err instanceof Error ? err.message : 'Failed to submit job.' });
+    }
+  }, [
+    files,
+    activeFile,
+    execution,
+    selectedProvider,
+    selectedBackend,
+    shots,
+    noiseEnabled,
+    noiseConfig,
+  ]);
+
+  const handleAnalyze = useCallback(async () => {
+    if (selectedProvider !== 'simulator' || !noiseEnabled) return;
+    setIsAnalyzing(true);
+    setAnalyzeResult(null);
+    setBottomTab('analysis');
+    try {
+      const codeType = activeFile.endsWith('.qasm') ? 'qasm' : 'python';
+      const cleaned: Partial<NoiseConfig> = {};
+      (Object.entries(noiseConfig) as [keyof NoiseConfig, unknown][]).forEach(([key, val]) => {
+        if (typeof val === 'number' && val > 0) {
+          (cleaned as Record<string, unknown>)[key] = val;
+        }
+      });
+      const result = await analyzeCircuit({
+        qasm: files[activeFile],
+        shots,
+        mode: codeType,
+        noiseConfig: Object.keys(cleaned).length > 0 ? cleaned : undefined,
+      });
+      setAnalyzeResult(result);
+    } catch (err: unknown) {
+      setEditorError({ message: err instanceof Error ? err.message : 'Analysis failed.' });
+      setBottomTab('terminal');
+    } finally {
+      setIsAnalyzing(false);
+    }
+  }, [files, activeFile, selectedProvider, shots, noiseEnabled, noiseConfig]);
+
+  useEffect(() => {
+    if (execution.viewState === 'completed' && execution.outcomes.length > 0) {
+      setBottomTab('results');
+    }
+  }, [execution.viewState, execution.outcomes.length]);
+
+  return (
+    <div
+      className="ide-layout"
+      style={{
+        display: 'flex',
+        height: '100%',
+        width: '100%',
+        backgroundColor: 'var(--color-bg)',
+        color: 'var(--color-text)',
+      }}
+    >
+      <div
+        className="ide-sidebar"
+        style={{
+          width: '280px',
+          borderRight: '1px solid var(--color-border)',
+          display: 'flex',
+          flexDirection: 'column',
+          overflowY: 'auto',
+          backgroundColor: 'var(--color-bg)',
+        }}
+      >
+        <FileExplorer
+          activeFile={activeFile}
+          files={files}
+          folders={folders}
+          selectedFolder={selectedFolder}
+          renamingFolder={renamingFolder}
+          onSelectFile={handleFileChange}
+          onSelectFolder={handleSelectFolder}
+          onAddFile={handleAddFile}
+          onAddFolder={handleAddFolder}
+          onRenameFolder={handleRenameFolder}
+          onDeleteFile={handleDeleteFile}
+          onDeleteFolder={handleDeleteFolder}
+        />
+
+        {/* Execution Settings */}
+        <div
+          style={{
+            padding: '24px 16px 12px',
+            fontSize: '0.75rem',
+            fontWeight: 600,
+            textTransform: 'uppercase',
+            letterSpacing: '0.05em',
+            color: 'var(--color-text-subtle)',
+          }}
+        >
+          Execution Settings
+        </div>
+
+        <div
+          style={{
+            padding: '0 16px 16px',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '16px',
+            borderBottom: '1px solid var(--color-border)',
+          }}
+        >
+          <div>
+            <label
+              style={{
+                display: 'block',
+                fontSize: '0.8rem',
+                color: 'var(--color-text-muted)',
+                marginBottom: '6px',
+              }}
+            >
+              Provider
+            </label>
+            <select
+              className="form-field__input"
+              style={{
+                width: '100%',
+                backgroundColor: 'var(--color-surface-2)',
+                color: 'var(--color-text)',
+                border: '1px solid var(--color-border)',
+                padding: '8px',
+                borderRadius: '4px',
+                fontSize: '0.85rem',
+              }}
+              value={selectedProvider}
+              onChange={(e) =>
+                setSelectedProvider(e.target.value as 'simulator' | 'ibm_quantum' | 'spinq')
+              }
+            >
+              <option value="simulator">Local Simulator</option>
+              {(!user || ibmAvailable) && (
+                <option 
+                  value="ibm_quantum" 
+                  disabled={!user || (!activeFile.toLowerCase().includes('qiskit') && !activeFile.toLowerCase().endsWith('.qasm'))}
+                >
+                  IBM Quantum {!user ? '(Login required)' : (!activeFile.toLowerCase().includes('qiskit') && !activeFile.toLowerCase().endsWith('.qasm')) ? '(Qiskit/QASM only)' : ''}
+                </option>
+              )}
+              <option
+                value="spinq"
+                disabled={!user || !activeFile.toLowerCase().includes('spinqit')}
+              >
+                SpinQ Gemini Mini Pro {!user ? '(Login required)' : !activeFile.toLowerCase().includes('spinqit') ? '(SpinQit only)' : ''}
+              </option>
+            </select>
+            {selectedProvider === 'ibm_quantum' && credentialStatus !== 'valid' && (
+              <div style={{ fontSize: '0.75rem', color: 'var(--color-error)', marginTop: '4px' }}>
+                Valid IBM Token required.{' '}
+                <Link to="/settings" style={{ color: 'var(--color-primary)' }}>
+                  Go to Settings
+                </Link>
+              </div>
+            )}
+          </div>
+
+          {selectedProvider === 'ibm_quantum' && credentialStatus === 'valid' && (
+            <div>
+              <label
+                style={{
+                  display: 'block',
+                  fontSize: '0.8rem',
+                  color: 'var(--color-text-muted)',
+                  marginBottom: '6px',
+                }}
+              >
+                Hardware Backend
+              </label>
+              <select
+                className="form-field__input"
+                style={{
+                  width: '100%',
+                  backgroundColor: 'var(--color-surface-2)',
+                  color: 'var(--color-text)',
+                  border: '1px solid var(--color-border)',
+                  padding: '8px',
+                  borderRadius: '4px',
+                  fontSize: '0.85rem',
+                }}
+                value={selectedBackend}
+                onChange={(e) => setSelectedBackend(e.target.value)}
+              >
+                {ibmBackends.map((b) => (
+                  <option key={b.name} value={b.name}>
+                    {b.name} ({b.qubits}Q) - {b.status}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+
+          <div>
+            <label
+              style={{
+                display: 'block',
+                fontSize: '0.8rem',
+                color: 'var(--color-text-muted)',
+                marginBottom: '6px',
+              }}
+            >
+              Shots
+            </label>
+            <input
+              type="number"
+              className="form-field__input"
+              style={{
+                width: '100%',
+                backgroundColor: 'var(--color-surface-2)',
+                color: 'var(--color-text)',
+                border: '1px solid var(--color-border)',
+                padding: '8px',
+                borderRadius: '4px',
+                fontSize: '0.85rem',
+              }}
+              min={1}
+              max={100000}
+              value={shots}
+              onChange={(e) => setShots(parseInt(e.target.value, 10) || 1)}
+            />
+          </div>
+        </div>
+
+        {/* Noise Settings */}
+        {selectedProvider === 'simulator' && (
+          <>
+            <style>{`
+              .noise-slider {
+                -webkit-appearance: none;
+                width: 100%;
+                height: 4px;
+                background: var(--color-border);
+                border-radius: 2px;
+                outline: none;
+              }
+              .noise-slider::-webkit-slider-thumb {
+                -webkit-appearance: none;
+                appearance: none;
+                width: 14px;
+                height: 14px;
+                border-radius: 50%;
+                background: var(--color-primary);
+                cursor: pointer;
+                border: 2px solid var(--color-bg);
+                box-shadow: 0 0 0 1px var(--color-primary);
+              }
+              .noise-slider::-moz-range-thumb {
+                width: 14px;
+                height: 14px;
+                border-radius: 50%;
+                background: var(--color-primary);
+                cursor: pointer;
+                border: 2px solid var(--color-bg);
+                box-shadow: 0 0 0 1px var(--color-primary);
+              }
+              
+              .noise-toggle {
+                position: relative;
+                display: inline-block;
+                width: 32px;
+                height: 18px;
+                margin-right: 8px;
+              }
+              .noise-toggle input {
+                opacity: 0;
+                width: 0;
+                height: 0;
+              }
+              .noise-toggle-slider {
+                position: absolute;
+                cursor: pointer;
+                top: 0; left: 0; right: 0; bottom: 0;
+                background-color: var(--color-border);
+                transition: .2s;
+                border-radius: 18px;
+              }
+              .noise-toggle-slider:before {
+                position: absolute;
+                content: "";
+                height: 14px;
+                width: 14px;
+                left: 2px;
+                bottom: 2px;
+                background-color: var(--color-text-muted);
+                transition: .2s;
+                border-radius: 50%;
+              }
+              .noise-toggle input:checked + .noise-toggle-slider {
+                background-color: var(--color-primary);
+              }
+              .noise-toggle input:checked + .noise-toggle-slider:before {
+                transform: translateX(14px);
+                background-color: var(--color-text);
+              }
+            `}</style>
+            <div
+              style={{
+                padding: '24px 16px 12px',
+                fontSize: '0.75rem',
+                fontWeight: 600,
+                textTransform: 'uppercase',
+                letterSpacing: '0.05em',
+                color: 'var(--color-text-subtle)',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+              }}
+            >
+              <span>Noise Simulator</span>
+              <label
+                style={{ display: 'flex', alignItems: 'center', cursor: 'pointer', margin: 0 }}
+              >
+                <div className="noise-toggle">
+                  <input
+                    type="checkbox"
+                    checked={noiseEnabled}
+                    onChange={(e) => setNoiseEnabled(e.target.checked)}
+                  />
+                  <span className="noise-toggle-slider"></span>
+                </div>
+                <span
+                  style={{
+                    color: noiseEnabled ? 'var(--color-primary)' : 'var(--color-text-muted)',
+                    textTransform: 'none',
+                    fontSize: '0.75rem',
+                    minWidth: '18px',
+                  }}
+                >
+                  {noiseEnabled ? 'On' : 'Off'}
+                </span>
+              </label>
+            </div>
+
+            {noiseEnabled && (
+              <div
+                style={{
+                  padding: '4px 16px 16px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '16px',
+                }}
+              >
+                {Object.entries({
+                  depolarizing: 'Depolarizing Error',
+                  bitFlip: 'Bit Flip Error',
+                  phaseFlip: 'Phase Flip Error',
+                  amplitudeDamping: 'Amplitude Damping',
+                  phaseDamping: 'Phase Damping',
+                  readoutError: 'Readout Error',
+                  crosstalk: 'Crosstalk',
+                }).map(([key, label]) => {
+                  const numVal =
+                    typeof noiseConfig[key as keyof NoiseConfig] === 'number'
+                      ? (noiseConfig[key as keyof NoiseConfig] as number)
+                      : 0;
+                  return (
+                    <div key={key}>
+                      <div
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          marginBottom: '8px',
+                        }}
+                      >
+                        <label style={{ fontSize: '0.8rem', color: 'var(--color-text)' }}>
+                          {label}
+                        </label>
+                        <span
+                          style={{
+                            fontSize: '0.75rem',
+                            color: 'var(--color-primary)',
+                            fontVariantNumeric: 'tabular-nums',
+                            fontWeight: 500,
+                          }}
+                        >
+                          {(numVal * 100).toFixed(1)}%
+                        </span>
+                      </div>
+                      <input
+                        type="range"
+                        className="noise-slider"
+                        min="0"
+                        max="0.5"
+                        step="0.01"
+                        value={numVal}
+                        onChange={(e) =>
+                          setNoiseConfig({ ...noiseConfig, [key]: parseFloat(e.target.value) })
+                        }
+                      />
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </>
+        )}
+      </div>
+      <div
+        className="ide-main"
+        style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0 }}
+      >
+        <div
+          className="ide-toolbar"
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            padding: '12px 24px',
+            backgroundColor: 'var(--color-bg)',
+            borderBottom: '1px solid var(--color-border)',
+          }}
+        >
+          <div
+            style={{
+              fontSize: '0.9rem',
+              color: 'var(--color-text)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+            }}
+          >
+            {activeFile.endsWith('.qasm') ? <QasmIcon /> : <PythonIcon />}
+            {activeFile}
+            <button
+              onClick={handleResetFile}
+              title="Reset IDE"
+              style={{
+                background: 'var(--color-surface-2)',
+                border: '1px solid var(--color-border)',
+                color: 'var(--color-text-muted)',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: '4px 8px',
+                marginLeft: '8px',
+                borderRadius: '4px',
+                fontSize: '0.75rem',
+                gap: '4px'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.color = 'var(--color-error)';
+                e.currentTarget.style.borderColor = 'var(--color-error)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.color = 'var(--color-text-muted)';
+                e.currentTarget.style.borderColor = 'var(--color-border)';
+              }}
+            >
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M3 6h18"></path>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+              </svg>
+              Reset
+            </button>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            {/* Push to GitHub button */}
+            {ghStatus?.connected && (
+              <button
+                type="button"
+                className="btn"
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  padding: '6px 12px',
+                  background: 'var(--color-surface-2)',
+                  border: '1px solid var(--color-border)',
+                  color: 'var(--color-text)',
+                  borderRadius: '6px',
+                  fontSize: '0.8125rem',
+                  cursor: 'pointer',
+                }}
+                onClick={openGhPush}
+                title="Push to GitHub"
+              >
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z" />
+                </svg>
+                Push
+              </button>
+            )}
+
+            <button
+              id="run-button"
+              className="btn btn--primary"
+              style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '6px 16px' }}
+              onClick={handleRun}
+              disabled={
+                execution.loading ||
+                (selectedProvider === 'ibm_quantum' &&
+                  (credentialStatus !== 'valid' || !selectedBackend))
+              }
+            >
+              {execution.loading ? (
+                <>Running...</>
+              ) : (
+                <>
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
+                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                  </svg>
+                  Run{' '}
+                  {selectedProvider === 'ibm_quantum'
+                    ? 'on IBM'
+                    : noiseEnabled
+                      ? 'with Noise'
+                      : 'Simulator'}
+                </>
+              )}
+            </button>
+          </div>
+        </div>
+
+        <div
+          style={{ flex: 2, position: 'relative', borderBottom: '1px solid var(--color-border)' }}
+        >
+          <EditorPanel
+            code={files[activeFile]}
+            onChange={handleCodeChange}
+            language={activeFile.endsWith('.py') ? 'python' : 'qasm'}
+          />
+        </div>
+
+        <div
+          className="bottom-panel"
+          style={{
+            flex: 1,
+            backgroundColor: 'var(--color-bg)',
+            display: 'flex',
+            flexDirection: 'column',
+          }}
+        >
+          <div
+            style={{
+              display: 'flex',
+              gap: '2px',
+              borderBottom: '1px solid var(--color-border)',
+              backgroundColor: 'var(--color-bg)',
+              padding: '0 8px',
+            }}
+          >
+            <style>{`
+              .ide-tab {
+                padding: 8px 16px;
+                font-size: 0.75rem;
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+                color: var(--color-text-subtle);
+                border: none;
+                border-bottom: 2px solid transparent;
+                cursor: pointer;
+                background: transparent;
+                transition: color 0.2s;
+              }
+              .ide-tab--active {
+                color: var(--color-text);
+                border-bottom: 2px solid var(--color-primary);
+              }
+            `}</style>
+            <button
+              className={`ide-tab ${bottomTab === 'terminal' ? 'ide-tab--active' : ''}`}
+              onClick={() => setBottomTab('terminal')}
+            >
+              Terminal
+            </button>
+            <button
+              className={`ide-tab ${bottomTab === 'results' ? 'ide-tab--active' : ''}`}
+              onClick={() => setBottomTab('results')}
+            >
+              Visualizer
+            </button>
+            <button
+              className={`ide-tab ${bottomTab === 'analysis' ? 'ide-tab--active' : ''}`}
+              title={
+                !noiseEnabled || selectedProvider !== 'simulator'
+                  ? 'Enable noise simulator to view Analysis'
+                  : ''
+              }
+              disabled={
+                !noiseEnabled ||
+                selectedProvider !== 'simulator' ||
+                execution.viewState !== 'completed'
+              }
+              style={{
+                opacity:
+                  !noiseEnabled ||
+                  selectedProvider !== 'simulator' ||
+                  execution.viewState !== 'completed'
+                    ? 0.5
+                    : 1,
+                cursor:
+                  !noiseEnabled ||
+                  selectedProvider !== 'simulator' ||
+                  execution.viewState !== 'completed'
+                    ? 'not-allowed'
+                    : 'pointer',
+              }}
+              onClick={() => {
+                if (
+                  !noiseEnabled ||
+                  selectedProvider !== 'simulator' ||
+                  execution.viewState !== 'completed'
+                )
+                  return;
+                if (!analyzeResult && !isAnalyzing) handleAnalyze();
+                else setBottomTab('analysis');
+              }}
+            >
+              Analysis
+              {!noiseEnabled || selectedProvider !== 'simulator' ? (
+                <span
+                  style={{
+                    marginLeft: '6px',
+                    fontSize: '0.65rem',
+                    backgroundColor: 'var(--color-error)',
+                    color: 'var(--color-text)',
+                    padding: '2px 6px',
+                    borderRadius: '10px',
+                  }}
+                >
+                  Requires Noise
+                </span>
+              ) : (
+                <span
+                  style={{
+                    marginLeft: '6px',
+                    fontSize: '0.65rem',
+                    backgroundColor: 'var(--color-success)',
+                    color: 'var(--color-text)',
+                    padding: '2px 6px',
+                    borderRadius: '10px',
+                  }}
+                >
+                  New
+                </span>
+              )}
+            </button>
+            <button
+              className={`ide-tab ${bottomTab === 'transpile' ? 'ide-tab--active' : ''}`}
+              onClick={() => setBottomTab('transpile')}
+            >
+              Transpilation
+              <span
+                style={{
+                  marginLeft: '6px',
+                  fontSize: '0.65rem',
+                  backgroundColor: 'var(--color-primary)',
+                  color: 'var(--color-text)',
+                  padding: '2px 6px',
+                  borderRadius: '10px',
+                }}
+              >
+                Trace
+              </span>
+            </button>
+          </div>
+
+          <div
+            style={{
+              padding: '12px 16px',
+              flex: 1,
+              overflowY: 'auto',
+              display: 'flex',
+              flexDirection: 'column',
+            }}
+          >
+            {bottomTab === 'terminal' && (
+              <div
+                style={{
+                  fontFamily: 'var(--font-mono)',
+                  fontSize: '0.85rem',
+                  color: 'var(--color-text-muted)',
+                }}
+              >
+                {!execution.job && !editorError && (
+                  <div>
+                    &gt; Ready. Configured for {selectedProvider} ({shots} shots)
+                    {noiseEnabled && selectedProvider === 'simulator' ? ' [NOISE ENABLED]' : ''}.
+                  </div>
+                )}
+                {execution.loading && <div>&gt; Submitting job...</div>}
+                {execution.job && execution.viewState === 'pending' && (
+                  <div>
+                    &gt; Job [{execution.job.jobId}] {execution.job.status}...
+                    {selectedProvider === 'ibm_quantum' ? ' (Hardware queue may take a while)' : ''}
+                  </div>
+                )}
+                {execution.viewState === 'completed' && (
+                  <div style={{ color: 'var(--color-success)' }}>
+                    &gt; Job [{execution.job?.jobId}] completed. Open the Visualizer tab to see
+                    results.
+                  </div>
+                )}
+                {execution.viewState === 'failed' && (
+                  <div style={{ color: 'var(--color-error)' }}>
+                    &gt; Job failed: {execution.job?.error?.message || 'Unknown error'}
+                  </div>
+                )}
+                {execution.viewState === 'cancelled' && (
+                  <div style={{ color: 'var(--color-warning)' }}>&gt; Job cancelled.</div>
+                )}
+                {editorError && (
+                  <div style={{ color: 'var(--color-error)', marginTop: '8px' }}>
+                    <div style={{ fontWeight: 600 }}>Error:</div>
+                    <div style={{ whiteSpace: 'pre-wrap' }}>{editorError.message}</div>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {bottomTab === 'results' && (
+              <div
+                className="ide-visualizer"
+                style={{
+                  flex: 1,
+                  color: 'var(--color-text)',
+                  display: 'flex',
+                  flexDirection: 'column',
+                }}
+              >
+                {execution.viewState === 'completed' && execution.outcomes.length > 0 ? (
+                  <div style={{ display: 'flex', gap: '32px', height: '100%' }}>
+                    <div style={{ flex: 2, minWidth: '300px', height: '100%', maxHeight: '300px' }}>
+                      <h4
+                        style={{
+                          margin: '0 0 12px 0',
+                          fontSize: '0.8rem',
+                          color: 'var(--color-text-muted)',
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.05em',
+                        }}
+                      >
+                        Probability Distribution
+                      </h4>
+                      <ProbabilityBarChart outcomes={execution.outcomes} maxDisplay={10} compact={true} />
+                    </div>
+                    <div style={{ flex: 1, overflowY: 'auto' }}>
+                      <h4
+                        style={{
+                          margin: '0 0 12px 0',
+                          fontSize: '0.8rem',
+                          color: 'var(--color-text-muted)',
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.05em',
+                        }}
+                      >
+                        Counts
+                      </h4>
+                      <ResultsTable outcomes={execution.outcomes} maxDisplay={10} compact={true} />
+                    </div>
+                  </div>
+                ) : (
+                  <div
+                    style={{
+                      color: 'var(--color-text-muted)',
+                      fontStyle: 'italic',
+                      display: 'flex',
+                      height: '100%',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    {execution.viewState === 'completed'
+                      ? 'No outcomes recorded for this run. Did you forget to add measurement gates?'
+                      : 'Run a circuit successfully to view visualization.'}
+                  </div>
+                )}
+              </div>
+            )}
+
+            {bottomTab === 'analysis' && (
+              <div style={{ flex: 1, overflow: 'hidden' }}>
+                {isAnalyzing && (
+                  <div
+                    style={{
+                      display: 'flex',
+                      height: '100%',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      color: 'var(--color-primary)',
+                    }}
+                  >
+                    &gt; Running Monte Carlo simulations and computing fidelity... This may take a
+                    few seconds.
+                  </div>
+                )}
+                {!isAnalyzing && analyzeResult && (
+                  <PerformanceAnalysisPanel
+                    data={analyzeResult}
+                    onClose={() => setBottomTab('results')}
+                  />
+                )}
+                {!isAnalyzing && !analyzeResult && (
+                  <div
+                    style={{
+                      display: 'flex',
+                      height: '100%',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <button onClick={handleAnalyze} className="btn btn--primary">
+                      Analyze Performance
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {bottomTab === 'transpile' && (
+              <div style={{ flex: 1, overflow: 'hidden' }}>
+                <TranspilationPanel
+                  qasm={files[activeFile]}
+                  codeType={activeFile.endsWith('.py') ? 'python' : 'qasm'}
+                  backendName={
+                    selectedProvider === 'ibm_quantum' ? selectedBackend : 'ibm_brisbane'
+                  }
+                  onClose={() => setBottomTab('terminal')}
+                />
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* ======================== Push to GitHub Dialog ======================== */}
+      {showGhPush && (
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 1000,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            background: 'rgba(var(--color-bg), 0.6)',
+            backdropFilter: 'blur(4px)',
+          }}
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setShowGhPush(false);
+          }}
+        >
+          <div
+            style={{
+              width: 480,
+              maxWidth: '95vw',
+              background: 'var(--color-surface)',
+              border: '1px solid var(--color-border)',
+              borderRadius: 12,
+              overflow: 'hidden',
+              boxShadow: '0 16px 48px rgba(0,0,0,0.5)',
+            }}
+          >
+            {/* Header */}
+            <div
+              style={{
+                padding: '20px 24px 16px',
+                borderBottom: '1px solid var(--color-surface-2)',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 12,
+              }}
+            >
+              <svg width="20" height="20" viewBox="0 0 16 16" fill="var(--color-text)">
+                <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z" />
+              </svg>
+              <h3
+                style={{ fontSize: '1rem', fontWeight: 600, color: 'var(--color-text)', margin: 0 }}
+              >
+                Push to GitHub
+              </h3>
+            </div>
+
+            {/* Body */}
+            <div
+              style={{ padding: '20px 24px', display: 'flex', flexDirection: 'column', gap: 16 }}
+            >
+              {ghPushResult && (
+                <div
+                  style={{
+                    padding: '10px 14px',
+                    borderRadius: 6,
+                    fontSize: '0.875rem',
+                    background:
+                      ghPushResult.type === 'success'
+                        ? 'rgba(52,211,153,0.1)'
+                        : 'rgba(248,113,113,0.1)',
+                    color:
+                      ghPushResult.type === 'success'
+                        ? 'var(--color-success)'
+                        : 'var(--color-error)',
+                    border: `1px solid ${ghPushResult.type === 'success' ? 'rgba(52,211,153,0.25)' : 'rgba(248,113,113,0.25)'}`,
+                  }}
+                >
+                  {ghPushResult.text}
+                  {ghPushResult.url && (
+                    <>
+                      {' '}
+                      <a
+                        href={ghPushResult.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{ color: 'var(--color-info)' }}
+                      >
+                        View on GitHub ↗
+                      </a>
+                    </>
+                  )}
+                </div>
+              )}
+
+              {/* Repository */}
+              <div>
+                <label
+                  style={{
+                    display: 'block',
+                    fontSize: '0.8rem',
+                    color: 'var(--color-text-muted)',
+                    marginBottom: 6,
+                  }}
+                >
+                  Repository
+                </label>
+                {ghReposLoading ? (
+                  <div style={{ fontSize: '0.8125rem', color: 'var(--color-text-muted)' }}>
+                    Loading repositories…
+                  </div>
+                ) : (
+                  <select
+                    style={{
+                      width: '100%',
+                      background: 'var(--color-surface)',
+                      color: 'var(--color-text)',
+                      border: '1px solid var(--color-border)',
+                      padding: '8px 10px',
+                      borderRadius: 6,
+                      fontSize: '0.85rem',
+                      boxSizing: 'border-box',
+                    }}
+                    value={ghSelectedRepo}
+                    onChange={(e) => setGhSelectedRepo(e.target.value)}
+                  >
+                    {ghRepos.length === 0 && <option value="">No repositories found</option>}
+                    {ghRepos.map((r) => (
+                      <option key={r.id} value={r.fullName}>
+                        {r.fullName} {r.private ? '🔒' : ''}
+                      </option>
+                    ))}
+                  </select>
+                )}
+              </div>
+
+              {/* File path */}
+              <div>
+                <label
+                  style={{
+                    display: 'block',
+                    fontSize: '0.8rem',
+                    color: 'var(--color-text-muted)',
+                    marginBottom: 6,
+                  }}
+                >
+                  File Path
+                </label>
+                <input
+                  type="text"
+                  style={{
+                    width: '100%',
+                    background: 'var(--color-surface)',
+                    color: 'var(--color-text)',
+                    border: '1px solid var(--color-border)',
+                    padding: '8px 10px',
+                    borderRadius: 6,
+                    fontSize: '0.85rem',
+                    boxSizing: 'border-box',
+                  }}
+                  value={ghFilePath}
+                  onChange={(e) => setGhFilePath(e.target.value)}
+                  placeholder="e.g. circuits/bell_state.py"
+                />
+              </div>
+
+              {/* Commit message */}
+              <div>
+                <label
+                  style={{
+                    display: 'block',
+                    fontSize: '0.8rem',
+                    color: 'var(--color-text-muted)',
+                    marginBottom: 6,
+                  }}
+                >
+                  Commit Message
+                </label>
+                <input
+                  type="text"
+                  style={{
+                    width: '100%',
+                    background: 'var(--color-surface)',
+                    color: 'var(--color-text)',
+                    border: '1px solid var(--color-border)',
+                    padding: '8px 10px',
+                    borderRadius: 6,
+                    fontSize: '0.85rem',
+                    boxSizing: 'border-box',
+                  }}
+                  value={ghCommitMsg}
+                  onChange={(e) => setGhCommitMsg(e.target.value)}
+                  placeholder="Describe your changes"
+                />
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div
+              style={{
+                padding: '16px 24px',
+                borderTop: '1px solid var(--color-surface-2)',
+                display: 'flex',
+                justifyContent: 'flex-end',
+                gap: 8,
+              }}
+            >
+              <button
+                type="button"
+                onClick={() => setShowGhPush(false)}
+                style={{
+                  padding: '8px 16px',
+                  background: 'var(--color-surface-2)',
+                  color: 'var(--color-text)',
+                  border: '1px solid var(--color-border)',
+                  borderRadius: 6,
+                  fontSize: '0.85rem',
+                  cursor: 'pointer',
+                }}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={handleGhPush}
+                disabled={ghPushing || !ghSelectedRepo || !ghFilePath.trim()}
+                style={{
+                  padding: '8px 16px',
+                  background: 'var(--color-success)',
+                  color: 'var(--color-text)',
+                  border: '1px solid var(--color-success)',
+                  borderRadius: 6,
+                  fontSize: '0.85rem',
+                  fontWeight: 600,
+                  cursor: ghPushing ? 'wait' : 'pointer',
+                  opacity: ghPushing || !ghSelectedRepo || !ghFilePath.trim() ? 0.5 : 1,
+                }}
+              >
+                {ghPushing ? 'Pushing…' : 'Push to GitHub'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}

@@ -1,0 +1,20 @@
+{
+  "record_id": "PV092",
+  "circuit_id": "T19",
+  "pass_name": "VF2Layout",
+  "pass_type": "AnalysisPass",
+  "stage": "Qubit Mapping",
+  "execution_time_ms": 1.6646385192871094,
+  "before": {
+    "gates": 22,
+    "depth": 15
+  },
+  "after": {
+    "gates": 22,
+    "depth": 15
+  },
+  "delta_gates": 0,
+  "delta_depth": 0,
+  "changed_gates": [],
+  "circuit_changed": false
+}

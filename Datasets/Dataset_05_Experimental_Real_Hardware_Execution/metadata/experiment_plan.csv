@@ -1,0 +1,15 @@
+experiment_id,circuit_id,hardware_id,hardware_target,target_shots,planned_repetitions,status,notes
+EXP-IBM-01,HW01,HW_IBM_BRISBANE,IBM Quantum (ibm_brisbane),1024,3,COMPLETED_ACTUAL_EXECUTION,Executed on Q0 via Qiskit Runtime SamplerV2
+EXP-SPINQ-01,HW01,HW_SPINQ_GEMINI_MINI_PRO,SpinQ Gemini Mini Pro,1024,3,COMPLETED_ACTUAL_EXECUTION,Executed via SpinQit RF pulse on 1H nuclear spin
+EXP-IBM-02,HW02,HW_IBM_BRISBANE,IBM Quantum (ibm_brisbane),1024,3,COMPLETED_ACTUAL_EXECUTION,Executed on Q0; decomposed into rz-sx-rz
+EXP-SPINQ-02,HW02,HW_SPINQ_GEMINI_MINI_PRO,SpinQ Gemini Mini Pro,1024,3,COMPLETED_ACTUAL_EXECUTION,Executed via native Ry(pi/2) RF pulse
+EXP-IBM-03,HW03,HW_IBM_BRISBANE,IBM Quantum (ibm_brisbane),1024,3,COMPLETED_ACTUAL_EXECUTION,Executed on Q0; native X gate readout verification
+EXP-SPINQ-03,HW03,HW_SPINQ_GEMINI_MINI_PRO,SpinQ Gemini Mini Pro,1024,3,COMPLETED_ACTUAL_EXECUTION,Executed via native pi pulse on 1H nuclear spin
+EXP-IBM-04,HW04,HW_IBM_BRISBANE,IBM Quantum (ibm_brisbane),1024,3,COMPLETED_ACTUAL_EXECUTION,Bell state executed on physical pair Q0-Q1
+EXP-SPINQ-04,HW04,HW_SPINQ_GEMINI_MINI_PRO,SpinQ Gemini Mini Pro,1024,3,COMPLETED_ACTUAL_EXECUTION,Bell state executed via J-coupling sequence on Q0-Q1
+EXP-IBM-05,HW05,HW_IBM_BRISBANE,IBM Quantum (ibm_brisbane),1024,3,COMPLETED_ACTUAL_EXECUTION,Reverse CX(q1,q0) mapped via Hadamard conjugation on Q0-Q1
+EXP-SPINQ-05,HW05,HW_SPINQ_GEMINI_MINI_PRO,SpinQ Gemini Mini Pro,1024,3,COMPLETED_ACTUAL_EXECUTION,Reverse CX executed via symmetric scalar J-coupling
+EXP-IBM-06,HW06,HW_IBM_BRISBANE,IBM Quantum (ibm_brisbane),1024,3,COMPLETED_ACTUAL_EXECUTION,Ry(pi/4)+CX executed on physical pair Q0-Q1
+EXP-SPINQ-06,HW06,HW_SPINQ_GEMINI_MINI_PRO,SpinQ Gemini Mini Pro,1024,3,COMPLETED_ACTUAL_EXECUTION,Ry(pi/4)+CX executed via RF pulse + J-coupling
+EXP-IBM-07,HW07,HW_IBM_BRISBANE,IBM Quantum (ibm_brisbane),1024,3,COMPLETED_ACTUAL_EXECUTION,Three-qubit GHZ state executed on physical path Q0-Q1-Q2
+EXP-SPINQ-07,HW07,HW_SPINQ_GEMINI_MINI_PRO,SpinQ Gemini Mini Pro,1024,0,UNSUPPORTED_PHYSICAL_QUBIT_LIMIT,Excluded: device has 2 physical qubits; circuit requires 3 qubits

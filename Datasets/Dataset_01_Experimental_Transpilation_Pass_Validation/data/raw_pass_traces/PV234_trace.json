@@ -1,0 +1,20 @@
+{
+  "record_id": "PV234",
+  "circuit_id": "T15",
+  "pass_name": "InverseCancellation",
+  "pass_type": "TransformationPass",
+  "stage": "Optimization",
+  "execution_time_ms": 1.5034675598144531,
+  "before": {
+    "gates": 11,
+    "depth": 11
+  },
+  "after": {
+    "gates": 11,
+    "depth": 11
+  },
+  "delta_gates": 0,
+  "delta_depth": 0,
+  "changed_gates": [],
+  "circuit_changed": false
+}

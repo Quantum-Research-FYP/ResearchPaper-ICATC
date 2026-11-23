@@ -1,0 +1,48 @@
+{
+  "dataset_id": "Dataset_06_Experimental_Compilation_Benchmark",
+  "name": "Quantum Circuit Compilation Benchmark & Transparency Instrumentation Evaluation",
+  "version": "2.0.0-experimental",
+  "date_created": "2026-11-19",
+  "execution_metrics": {
+    "total_circuits": 40,
+    "backends_evaluated": ["linear_6", "h_shape_7"],
+    "compilers_evaluated": [
+      "qiskit_default_o1",
+      "qiskit_default_o3",
+      "pytket_default",
+      "platform_instrumented"
+    ],
+    "repetitions_per_run": 10,
+    "total_benchmark_records": 320,
+    "total_compilations_executed": 3520,
+    "functional_equivalence_pass_rate": "100.0%",
+    "test_a_output_identity_pass_rate": "100.0%"
+  },
+  "files": [
+    {
+      "filepath": "metadata/circuit_catalogue_40_circuits.csv",
+      "description": "Full specifications for all 40 canonical benchmark circuits",
+      "row_count": 40
+    },
+    {
+      "filepath": "metadata/target_configurations.csv",
+      "description": "Coupling map and basis gate targets for linear_6 and h_shape_7",
+      "row_count": 2
+    },
+    {
+      "filepath": "metadata/compilation_benchmark_320_runs.csv",
+      "description": "Master empirical benchmark dataset recording pre/post metrics, routing, timings, and equivalence",
+      "row_count": 320
+    },
+    {
+      "filepath": "metadata/instrumentation_overhead_evaluation.csv",
+      "description": "Test A and Test B evaluation comparing plain Qiskit Level 1 vs Quantum Studio",
+      "row_count": 80
+    },
+    {
+      "filepath": "metadata/compiler_comparison_summary.csv",
+      "description": "Aggregated summary table across all 4 compilers and 2 backends",
+      "row_count": 8
+    }
+  ]
+}

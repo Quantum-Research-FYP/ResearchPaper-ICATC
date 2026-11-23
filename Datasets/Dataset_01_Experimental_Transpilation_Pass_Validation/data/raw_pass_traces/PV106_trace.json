@@ -1,0 +1,28 @@
+{
+  "record_id": "PV106",
+  "circuit_id": "T20",
+  "pass_name": "BasisTranslator",
+  "pass_type": "TransformationPass",
+  "stage": "Gate Decomposition",
+  "execution_time_ms": 8.041858673095703,
+  "before": {
+    "gates": 36,
+    "depth": 31
+  },
+  "after": {
+    "gates": 164,
+    "depth": 131
+  },
+  "delta_gates": 128,
+  "delta_depth": 100,
+  "changed_gates": [
+    "cx: -14",
+    "cz: +29",
+    "h: -2",
+    "p: -15",
+    "rz: +75",
+    "swap: -5",
+    "sx: +60"
+  ],
+  "circuit_changed": true
+}

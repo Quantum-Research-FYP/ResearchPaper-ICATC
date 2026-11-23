@@ -1,0 +1,22 @@
+{
+  "record_id": "PV208",
+  "circuit_id": "T25",
+  "pass_name": "Optimize1qGatesDecomposition",
+  "pass_type": "TransformationPass",
+  "stage": "Optimization",
+  "execution_time_ms": 0.0,
+  "before": {
+    "gates": 13,
+    "depth": 10
+  },
+  "after": {
+    "gates": 12,
+    "depth": 9
+  },
+  "delta_gates": -1,
+  "delta_depth": -1,
+  "changed_gates": [
+    "rz: -1"
+  ],
+  "circuit_changed": true
+}

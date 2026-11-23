@@ -1,0 +1,8 @@
+circuit_id,purpose,logical_qubits,canonical_logical_circuit,required_operations,logical_gate_count,measurement_bits,ibm_quantum_support,spinq_support,status
+HW01,Single-qubit superposition,1,H(q0); measure q0,H,1,1,Supported (decomposes to rz-sx-rz),Supported (RF pi/2 pulse),COMPLETED_ACTUAL_EXECUTION
+HW02,Single-qubit rotation,1,Ry(pi/2)(q0); measure q0,RY(pi/2),1,1,Supported (decomposes to rz-sx-rz),Supported (direct native RF pulse),COMPLETED_ACTUAL_EXECUTION
+HW03,Computational-basis control,1,X(q0); measure q0,X,1,1,Supported (native X gate),Supported (native pi pulse),COMPLETED_ACTUAL_EXECUTION
+HW04,Bell state,2,"H(q0); CX(q0,q1); measure q0,q1","H, CX",2,2,Supported (native cx(0,1)),Supported (scalar J-coupling sequence),COMPLETED_ACTUAL_EXECUTION
+HW05,Reverse-direction entanglement,2,"H(q1); CX(q1,q0); measure q0,q1","H, CX",2,2,Supported (H-conjugation / swap routing),Supported (symmetric scalar J-coupling),COMPLETED_ACTUAL_EXECUTION
+HW06,Rotation plus entanglement,2,"Ry(pi/4)(q0); CX(q0,q1); measure q0,q1","RY, CX",2,2,Supported (rz-sx decomposition + CX),Supported (RF pulse + J-coupling),COMPLETED_ACTUAL_EXECUTION
+HW07,Three-qubit GHZ state,3,"H(q0); CX(q0,q1); CX(q1,q2); measure q0,q1,q2","H, CX",3,3,Supported (heavy-hex path Q0-Q1-Q2),UNSUPPORTED_PHYSICAL_QUBIT_LIMIT (Device has 2 qubits),RECORDED_BOUNDARY_CONDITION

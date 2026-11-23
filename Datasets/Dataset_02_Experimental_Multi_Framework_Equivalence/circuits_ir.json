@@ -1,0 +1,1980 @@
+[
+ {
+  "id": "E01",
+  "name": "hadamard",
+  "num_qubits": 1,
+  "ops": [
+   {
+    "g": "h",
+    "q": [
+     0
+    ]
+   }
+  ],
+  "measure": [
+   0
+  ],
+  "category": "basic",
+  "purpose": "Superposition from one H",
+  "tags": [
+   "1q"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "E02",
+  "name": "pauli_x",
+  "num_qubits": 1,
+  "ops": [
+   {
+    "g": "x",
+    "q": [
+     0
+    ]
+   }
+  ],
+  "measure": [
+   0
+  ],
+  "category": "basic",
+  "purpose": "Deterministic bit flip",
+  "tags": [
+   "1q"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "E03",
+  "name": "h_h_identity",
+  "num_qubits": 1,
+  "ops": [
+   {
+    "g": "h",
+    "q": [
+     0
+    ]
+   },
+   {
+    "g": "h",
+    "q": [
+     0
+    ]
+   }
+  ],
+  "measure": [
+   0
+  ],
+  "category": "basic",
+  "purpose": "Interference: H.H = I",
+  "tags": [
+   "1q"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "E04",
+  "name": "rx_ry_rz",
+  "num_qubits": 1,
+  "ops": [
+   {
+    "g": "rx",
+    "q": [
+     0
+    ],
+    "p": [
+     0.3
+    ]
+   },
+   {
+    "g": "ry",
+    "q": [
+     0
+    ],
+    "p": [
+     0.5
+    ]
+   },
+   {
+    "g": "rz",
+    "q": [
+     0
+    ],
+    "p": [
+     0.7
+    ]
+   }
+  ],
+  "measure": [
+   0
+  ],
+  "category": "basic",
+  "purpose": "Rotation conventions (radians); Rz before Z-measurement changes nothing",
+  "tags": [
+   "1q",
+   "rotations"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "E05",
+  "name": "bell_state",
+  "num_qubits": 2,
+  "ops": [
+   {
+    "g": "h",
+    "q": [
+     0
+    ]
+   },
+   {
+    "g": "cx",
+    "q": [
+     0,
+     1
+    ]
+   }
+  ],
+  "measure": [
+   0,
+   1
+  ],
+  "category": "basic",
+  "purpose": "Two-qubit entanglement",
+  "tags": [
+   "entanglement"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "E06",
+  "name": "ghz_3",
+  "num_qubits": 3,
+  "ops": [
+   {
+    "g": "h",
+    "q": [
+     0
+    ]
+   },
+   {
+    "g": "cx",
+    "q": [
+     0,
+     1
+    ]
+   },
+   {
+    "g": "cx",
+    "q": [
+     1,
+     2
+    ]
+   }
+  ],
+  "measure": [
+   0,
+   1,
+   2
+  ],
+  "category": "basic",
+  "purpose": "3-qubit entanglement",
+  "tags": [
+   "entanglement"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "E07",
+  "name": "ghz_4",
+  "num_qubits": 4,
+  "ops": [
+   {
+    "g": "h",
+    "q": [
+     0
+    ]
+   },
+   {
+    "g": "cx",
+    "q": [
+     0,
+     1
+    ]
+   },
+   {
+    "g": "cx",
+    "q": [
+     1,
+     2
+    ]
+   },
+   {
+    "g": "cx",
+    "q": [
+     2,
+     3
+    ]
+   }
+  ],
+  "measure": [
+   0,
+   1,
+   2,
+   3
+  ],
+  "category": "basic",
+  "purpose": "4-qubit entanglement",
+  "tags": [
+   "entanglement"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "E08",
+  "name": "w_state_3",
+  "num_qubits": 3,
+  "ops": [
+   {
+    "g": "ry",
+    "q": [
+     0
+    ],
+    "p": [
+     1.9106332362490186
+    ]
+   },
+   {
+    "g": "cry",
+    "q": [
+     0,
+     1
+    ],
+    "p": [
+     1.5707963267948966
+    ]
+   },
+   {
+    "g": "cx",
+    "q": [
+     1,
+     0
+    ]
+   },
+   {
+    "g": "x",
+    "q": [
+     0
+    ]
+   },
+   {
+    "g": "x",
+    "q": [
+     1
+    ]
+   },
+   {
+    "g": "ccx",
+    "q": [
+     0,
+     1,
+     2
+    ]
+   },
+   {
+    "g": "x",
+    "q": [
+     0
+    ]
+   },
+   {
+    "g": "x",
+    "q": [
+     1
+    ]
+   }
+  ],
+  "measure": [
+   0,
+   1,
+   2
+  ],
+  "category": "intermediate",
+  "purpose": "W state (equal weight on 001, 010, 100)",
+  "tags": [
+   "entanglement",
+   "controlled",
+   "toffoli"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "E09",
+  "name": "teleportation_coherent",
+  "num_qubits": 3,
+  "ops": [
+   {
+    "g": "ry",
+    "q": [
+     0
+    ],
+    "p": [
+     0.7
+    ]
+   },
+   {
+    "g": "h",
+    "q": [
+     1
+    ]
+   },
+   {
+    "g": "cx",
+    "q": [
+     1,
+     2
+    ]
+   },
+   {
+    "g": "cx",
+    "q": [
+     0,
+     1
+    ]
+   },
+   {
+    "g": "h",
+    "q": [
+     0
+    ]
+   },
+   {
+    "g": "cx",
+    "q": [
+     1,
+     2
+    ]
+   },
+   {
+    "g": "cz",
+    "q": [
+     0,
+     2
+    ]
+   }
+  ],
+  "measure": [
+   0,
+   1,
+   2
+  ],
+  "category": "intermediate",
+  "purpose": "Teleportation with coherent (deferred-measurement) corrections; P(q2=1)=sin^2(0.35)",
+  "tags": [
+   "algorithm",
+   "entanglement"
+  ],
+  "notes": "Classical conditions are not in the IR; corrections are coherent."
+ },
+ {
+  "id": "E10",
+  "name": "deutsch_balanced",
+  "num_qubits": 2,
+  "ops": [
+   {
+    "g": "x",
+    "q": [
+     1
+    ]
+   },
+   {
+    "g": "h",
+    "q": [
+     0
+    ]
+   },
+   {
+    "g": "h",
+    "q": [
+     1
+    ]
+   },
+   {
+    "g": "cx",
+    "q": [
+     0,
+     1
+    ]
+   },
+   {
+    "g": "h",
+    "q": [
+     0
+    ]
+   }
+  ],
+  "measure": [
+   0
+  ],
+  "category": "intermediate",
+  "purpose": "Deutsch algorithm, balanced oracle; measure query qubit only",
+  "tags": [
+   "algorithm",
+   "partial_measurement"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "E11",
+  "name": "grover_2q_marked_11",
+  "num_qubits": 2,
+  "ops": [
+   {
+    "g": "h",
+    "q": [
+     0
+    ]
+   },
+   {
+    "g": "h",
+    "q": [
+     1
+    ]
+   },
+   {
+    "g": "cz",
+    "q": [
+     0,
+     1
+    ]
+   },
+   {
+    "g": "h",
+    "q": [
+     0
+    ]
+   },
+   {
+    "g": "h",
+    "q": [
+     1
+    ]
+   },
+   {
+    "g": "x",
+    "q": [
+     0
+    ]
+   },
+   {
+    "g": "x",
+    "q": [
+     1
+    ]
+   },
+   {
+    "g": "cz",
+    "q": [
+     0,
+     1
+    ]
+   },
+   {
+    "g": "x",
+    "q": [
+     0
+    ]
+   },
+   {
+    "g": "x",
+    "q": [
+     1
+    ]
+   },
+   {
+    "g": "h",
+    "q": [
+     0
+    ]
+   },
+   {
+    "g": "h",
+    "q": [
+     1
+    ]
+   }
+  ],
+  "measure": [
+   0,
+   1
+  ],
+  "category": "intermediate",
+  "purpose": "Grover search, 1 iteration finds |11>",
+  "tags": [
+   "algorithm"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "E12",
+  "name": "qft_3_on_superposition",
+  "num_qubits": 3,
+  "ops": [
+   {
+    "g": "h",
+    "q": [
+     0
+    ]
+   },
+   {
+    "g": "h",
+    "q": [
+     0
+    ]
+   },
+   {
+    "g": "cp",
+    "q": [
+     1,
+     0
+    ],
+    "p": [
+     1.5707963267948966
+    ]
+   },
+   {
+    "g": "cp",
+    "q": [
+     2,
+     0
+    ],
+    "p": [
+     0.7853981633974483
+    ]
+   },
+   {
+    "g": "h",
+    "q": [
+     1
+    ]
+   },
+   {
+    "g": "cp",
+    "q": [
+     2,
+     1
+    ],
+    "p": [
+     1.5707963267948966
+    ]
+   },
+   {
+    "g": "h",
+    "q": [
+     2
+    ]
+   },
+   {
+    "g": "swap",
+    "q": [
+     0,
+     2
+    ]
+   }
+  ],
+  "measure": [
+   0,
+   1,
+   2
+  ],
+  "category": "advanced",
+  "purpose": "QFT on (|000>+|100>)/sqrt2; phase-sensitive (odd outcomes cancel)",
+  "tags": [
+   "algorithm",
+   "controlled_phase"
+  ],
+  "notes": "QFT on a basis state alone gives a uniform distribution and cannot reveal phase errors."
+ },
+ {
+  "id": "E13",
+  "name": "qft_4_on_superposition",
+  "num_qubits": 4,
+  "ops": [
+   {
+    "g": "h",
+    "q": [
+     0
+    ]
+   },
+   {
+    "g": "h",
+    "q": [
+     0
+    ]
+   },
+   {
+    "g": "cp",
+    "q": [
+     1,
+     0
+    ],
+    "p": [
+     1.5707963267948966
+    ]
+   },
+   {
+    "g": "cp",
+    "q": [
+     2,
+     0
+    ],
+    "p": [
+     0.7853981633974483
+    ]
+   },
+   {
+    "g": "cp",
+    "q": [
+     3,
+     0
+    ],
+    "p": [
+     0.39269908169872414
+    ]
+   },
+   {
+    "g": "h",
+    "q": [
+     1
+    ]
+   },
+   {
+    "g": "cp",
+    "q": [
+     2,
+     1
+    ],
+    "p": [
+     1.5707963267948966
+    ]
+   },
+   {
+    "g": "cp",
+    "q": [
+     3,
+     1
+    ],
+    "p": [
+     0.7853981633974483
+    ]
+   },
+   {
+    "g": "h",
+    "q": [
+     2
+    ]
+   },
+   {
+    "g": "cp",
+    "q": [
+     3,
+     2
+    ],
+    "p": [
+     1.5707963267948966
+    ]
+   },
+   {
+    "g": "h",
+    "q": [
+     3
+    ]
+   },
+   {
+    "g": "swap",
+    "q": [
+     0,
+     3
+    ]
+   },
+   {
+    "g": "swap",
+    "q": [
+     1,
+     2
+    ]
+   }
+  ],
+  "measure": [
+   0,
+   1,
+   2,
+   3
+  ],
+  "category": "advanced",
+  "purpose": "QFT on (|0000>+|1000>)/sqrt2; odd outcomes cancel",
+  "tags": [
+   "algorithm",
+   "controlled_phase"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "E14",
+  "name": "qft_inverse_qft_roundtrip",
+  "num_qubits": 3,
+  "ops": [
+   {
+    "g": "x",
+    "q": [
+     0
+    ]
+   },
+   {
+    "g": "x",
+    "q": [
+     2
+    ]
+   },
+   {
+    "g": "h",
+    "q": [
+     0
+    ]
+   },
+   {
+    "g": "cp",
+    "q": [
+     1,
+     0
+    ],
+    "p": [
+     1.5707963267948966
+    ]
+   },
+   {
+    "g": "cp",
+    "q": [
+     2,
+     0
+    ],
+    "p": [
+     0.7853981633974483
+    ]
+   },
+   {
+    "g": "h",
+    "q": [
+     1
+    ]
+   },
+   {
+    "g": "cp",
+    "q": [
+     2,
+     1
+    ],
+    "p": [
+     1.5707963267948966
+    ]
+   },
+   {
+    "g": "h",
+    "q": [
+     2
+    ]
+   },
+   {
+    "g": "swap",
+    "q": [
+     0,
+     2
+    ]
+   },
+   {
+    "g": "swap",
+    "q": [
+     0,
+     2
+    ]
+   },
+   {
+    "g": "h",
+    "q": [
+     2
+    ]
+   },
+   {
+    "g": "cp",
+    "q": [
+     2,
+     1
+    ],
+    "p": [
+     -1.5707963267948966
+    ]
+   },
+   {
+    "g": "h",
+    "q": [
+     1
+    ]
+   },
+   {
+    "g": "cp",
+    "q": [
+     2,
+     0
+    ],
+    "p": [
+     -0.7853981633974483
+    ]
+   },
+   {
+    "g": "cp",
+    "q": [
+     1,
+     0
+    ],
+    "p": [
+     -1.5707963267948966
+    ]
+   },
+   {
+    "g": "h",
+    "q": [
+     0
+    ]
+   }
+  ],
+  "measure": [
+   0,
+   1,
+   2
+  ],
+  "category": "advanced",
+  "purpose": "QFT then inverse QFT returns |101>",
+  "tags": [
+   "algorithm",
+   "controlled_phase"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "E15",
+  "name": "variational_3q",
+  "num_qubits": 3,
+  "ops": [
+   {
+    "g": "ry",
+    "q": [
+     0
+    ],
+    "p": [
+     0.3
+    ]
+   },
+   {
+    "g": "ry",
+    "q": [
+     1
+    ],
+    "p": [
+     0.5
+    ]
+   },
+   {
+    "g": "ry",
+    "q": [
+     2
+    ],
+    "p": [
+     0.7
+    ]
+   },
+   {
+    "g": "cx",
+    "q": [
+     0,
+     1
+    ]
+   },
+   {
+    "g": "cx",
+    "q": [
+     1,
+     2
+    ]
+   },
+   {
+    "g": "rz",
+    "q": [
+     0
+    ],
+    "p": [
+     0.2
+    ]
+   },
+   {
+    "g": "rz",
+    "q": [
+     1
+    ],
+    "p": [
+     0.4
+    ]
+   },
+   {
+    "g": "rz",
+    "q": [
+     2
+    ],
+    "p": [
+     0.6
+    ]
+   }
+  ],
+  "measure": [
+   0,
+   1,
+   2
+  ],
+  "category": "intermediate",
+  "purpose": "Variational layer (fixed angles)",
+  "tags": [
+   "variational",
+   "rotations"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "E16",
+  "name": "entangle_rotations",
+  "num_qubits": 3,
+  "ops": [
+   {
+    "g": "h",
+    "q": [
+     0
+    ]
+   },
+   {
+    "g": "ry",
+    "q": [
+     1
+    ],
+    "p": [
+     0.4
+    ]
+   },
+   {
+    "g": "rz",
+    "q": [
+     2
+    ],
+    "p": [
+     0.6
+    ]
+   },
+   {
+    "g": "cx",
+    "q": [
+     0,
+     1
+    ]
+   },
+   {
+    "g": "cx",
+    "q": [
+     1,
+     2
+    ]
+   },
+   {
+    "g": "rx",
+    "q": [
+     0
+    ],
+    "p": [
+     0.3
+    ]
+   },
+   {
+    "g": "ry",
+    "q": [
+     2
+    ],
+    "p": [
+     0.5
+    ]
+   }
+  ],
+  "measure": [
+   0,
+   1,
+   2
+  ],
+  "category": "intermediate",
+  "purpose": "Mixed rotations and entanglement",
+  "tags": [
+   "rotations",
+   "entanglement"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "E17",
+  "name": "ry_cz_ry",
+  "num_qubits": 2,
+  "ops": [
+   {
+    "g": "ry",
+    "q": [
+     0
+    ],
+    "p": [
+     1.0
+    ]
+   },
+   {
+    "g": "ry",
+    "q": [
+     1
+    ],
+    "p": [
+     0.6
+    ]
+   },
+   {
+    "g": "cz",
+    "q": [
+     0,
+     1
+    ]
+   },
+   {
+    "g": "ry",
+    "q": [
+     0
+    ],
+    "p": [
+     0.5
+    ]
+   },
+   {
+    "g": "ry",
+    "q": [
+     1
+    ],
+    "p": [
+     0.5
+    ]
+   }
+  ],
+  "measure": [
+   0,
+   1
+  ],
+  "category": "basic",
+  "purpose": "CZ between non-trivial amplitudes (non-uniform output; the H-CZ-H circuit gives a flat distribution and is a weak test)",
+  "tags": [
+   "controlled"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "E18",
+  "name": "cx_direction",
+  "num_qubits": 2,
+  "ops": [
+   {
+    "g": "x",
+    "q": [
+     1
+    ]
+   },
+   {
+    "g": "cx",
+    "q": [
+     1,
+     0
+    ]
+   }
+  ],
+  "measure": [
+   0,
+   1
+  ],
+  "category": "basic",
+  "purpose": "Control is q1, target q0, input |01>: detects control/target reversal",
+  "tags": [
+   "controlled",
+   "direction"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "E19",
+  "name": "cx_chain_with_input",
+  "num_qubits": 3,
+  "ops": [
+   {
+    "g": "x",
+    "q": [
+     0
+    ]
+   },
+   {
+    "g": "cx",
+    "q": [
+     0,
+     1
+    ]
+   },
+   {
+    "g": "cx",
+    "q": [
+     1,
+     2
+    ]
+   },
+   {
+    "g": "cx",
+    "q": [
+     0,
+     2
+    ]
+   }
+  ],
+  "measure": [
+   0,
+   1,
+   2
+  ],
+  "category": "basic",
+  "purpose": "CX chain acting on a non-zero input",
+  "tags": [
+   "controlled"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "E20",
+  "name": "swap_chain",
+  "num_qubits": 3,
+  "ops": [
+   {
+    "g": "x",
+    "q": [
+     0
+    ]
+   },
+   {
+    "g": "swap",
+    "q": [
+     0,
+     1
+    ]
+   },
+   {
+    "g": "swap",
+    "q": [
+     1,
+     2
+    ]
+   }
+  ],
+  "measure": [
+   0,
+   1,
+   2
+  ],
+  "category": "basic",
+  "purpose": "SWAP routing of a basis state",
+  "tags": [
+   "swap"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "E21",
+  "name": "controlled_rotations",
+  "num_qubits": 2,
+  "ops": [
+   {
+    "g": "h",
+    "q": [
+     0
+    ]
+   },
+   {
+    "g": "crx",
+    "q": [
+     0,
+     1
+    ],
+    "p": [
+     0.5
+    ]
+   },
+   {
+    "g": "cry",
+    "q": [
+     0,
+     1
+    ],
+    "p": [
+     0.7
+    ]
+   },
+   {
+    "g": "crz",
+    "q": [
+     0,
+     1
+    ],
+    "p": [
+     0.9
+    ]
+   },
+   {
+    "g": "h",
+    "q": [
+     1
+    ]
+   }
+  ],
+  "measure": [
+   0,
+   1
+  ],
+  "category": "intermediate",
+  "purpose": "CRX/CRY/CRZ from a superposed control",
+  "tags": [
+   "controlled",
+   "rotations"
+  ],
+  "notes": "Braket has no native CRX/CRY/CRZ: decomposed."
+ },
+ {
+  "id": "E22",
+  "name": "toffoli",
+  "num_qubits": 3,
+  "ops": [
+   {
+    "g": "x",
+    "q": [
+     0
+    ]
+   },
+   {
+    "g": "x",
+    "q": [
+     1
+    ]
+   },
+   {
+    "g": "ccx",
+    "q": [
+     0,
+     1,
+     2
+    ]
+   }
+  ],
+  "measure": [
+   0,
+   1,
+   2
+  ],
+  "category": "intermediate",
+  "purpose": "Toffoli, both controls set",
+  "tags": [
+   "toffoli"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "E23",
+  "name": "multi_controlled_x_3",
+  "num_qubits": 4,
+  "ops": [
+   {
+    "g": "x",
+    "q": [
+     0
+    ]
+   },
+   {
+    "g": "x",
+    "q": [
+     1
+    ]
+   },
+   {
+    "g": "x",
+    "q": [
+     2
+    ]
+   },
+   {
+    "g": "mcx3",
+    "q": [
+     0,
+     1,
+     2,
+     3
+    ]
+   }
+  ],
+  "measure": [
+   0,
+   1,
+   2,
+   3
+  ],
+  "category": "advanced",
+  "purpose": "3-control X (hard to represent consistently)",
+  "tags": [
+   "toffoli",
+   "multi_controlled"
+  ],
+  "notes": "Needs a workaround in Braket (unitary), and OpenQASM3 ctrl(3) @ x may not be accepted by every importer."
+ },
+ {
+  "id": "E24",
+  "name": "bound_parameter_circuit",
+  "num_qubits": 2,
+  "ops": [
+   {
+    "g": "ry",
+    "q": [
+     0
+    ],
+    "p": [
+     0.9
+    ]
+   },
+   {
+    "g": "cx",
+    "q": [
+     0,
+     1
+    ]
+   },
+   {
+    "g": "rz",
+    "q": [
+     1
+    ],
+    "p": [
+     0.4
+    ]
+   },
+   {
+    "g": "ry",
+    "q": [
+     1
+    ],
+    "p": [
+     0.3
+    ]
+   }
+  ],
+  "measure": [
+   0,
+   1
+  ],
+  "category": "intermediate",
+  "purpose": "Parameterized circuit with values bound before execution",
+  "tags": [
+   "parameters"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "E25",
+  "name": "ghz3_partial_measurement",
+  "num_qubits": 3,
+  "ops": [
+   {
+    "g": "h",
+    "q": [
+     0
+    ]
+   },
+   {
+    "g": "cx",
+    "q": [
+     0,
+     1
+    ]
+   },
+   {
+    "g": "cx",
+    "q": [
+     1,
+     2
+    ]
+   }
+  ],
+  "measure": [
+   0,
+   2
+  ],
+  "category": "intermediate",
+  "purpose": "Measure a subset of qubits (q0,q2) in this order",
+  "tags": [
+   "partial_measurement"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "E26",
+  "name": "random_5q_seed42",
+  "num_qubits": 5,
+  "ops": [
+   {
+    "g": "ry",
+    "q": [
+     0
+    ],
+    "p": [
+     0.135
+    ]
+   },
+   {
+    "g": "y",
+    "q": [
+     1
+    ]
+   },
+   {
+    "g": "x",
+    "q": [
+     1
+    ]
+   },
+   {
+    "g": "ry",
+    "q": [
+     0
+    ],
+    "p": [
+     1.0474
+    ]
+   },
+   {
+    "g": "rx",
+    "q": [
+     0
+    ],
+    "p": [
+     0.9267
+    ]
+   },
+   {
+    "g": "h",
+    "q": [
+     0
+    ]
+   },
+   {
+    "g": "h",
+    "q": [
+     1
+    ]
+   },
+   {
+    "g": "x",
+    "q": [
+     4
+    ]
+   },
+   {
+    "g": "rx",
+    "q": [
+     0
+    ],
+    "p": [
+     0.8857
+    ]
+   },
+   {
+    "g": "ry",
+    "q": [
+     4
+    ],
+    "p": [
+     0.6873
+    ]
+   },
+   {
+    "g": "z",
+    "q": [
+     4
+    ]
+   },
+   {
+    "g": "y",
+    "q": [
+     0
+    ]
+   },
+   {
+    "g": "rz",
+    "q": [
+     1
+    ],
+    "p": [
+     1.0774
+    ]
+   },
+   {
+    "g": "y",
+    "q": [
+     2
+    ]
+   },
+   {
+    "g": "x",
+    "q": [
+     1
+    ]
+   },
+   {
+    "g": "cx",
+    "q": [
+     2,
+     0
+    ]
+   },
+   {
+    "g": "cx",
+    "q": [
+     0,
+     3
+    ]
+   },
+   {
+    "g": "cx",
+    "q": [
+     0,
+     2
+    ]
+   },
+   {
+    "g": "cx",
+    "q": [
+     2,
+     4
+    ]
+   },
+   {
+    "g": "cx",
+    "q": [
+     0,
+     3
+    ]
+   },
+   {
+    "g": "cx",
+    "q": [
+     4,
+     0
+    ]
+   },
+   {
+    "g": "cx",
+    "q": [
+     3,
+     0
+    ]
+   },
+   {
+    "g": "cx",
+    "q": [
+     4,
+     2
+    ]
+   }
+  ],
+  "measure": [
+   0,
+   1,
+   2,
+   3,
+   4
+  ],
+  "category": "advanced",
+  "purpose": "Random circuit generated ONCE and serialised (identical in every framework)",
+  "tags": [
+   "random"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "E27",
+  "name": "random_4q_cz_seed7",
+  "num_qubits": 4,
+  "ops": [
+   {
+    "g": "y",
+    "q": [
+     1
+    ]
+   },
+   {
+    "g": "z",
+    "q": [
+     0
+    ]
+   },
+   {
+    "g": "h",
+    "q": [
+     0
+    ]
+   },
+   {
+    "g": "y",
+    "q": [
+     0
+    ]
+   },
+   {
+    "g": "rx",
+    "q": [
+     1
+    ],
+    "p": [
+     0.1525
+    ]
+   },
+   {
+    "g": "z",
+    "q": [
+     3
+    ]
+   },
+   {
+    "g": "h",
+    "q": [
+     1
+    ]
+   },
+   {
+    "g": "h",
+    "q": [
+     3
+    ]
+   },
+   {
+    "g": "h",
+    "q": [
+     0
+    ]
+   },
+   {
+    "g": "x",
+    "q": [
+     0
+    ]
+   },
+   {
+    "g": "rx",
+    "q": [
+     3
+    ],
+    "p": [
+     0.1694
+    ]
+   },
+   {
+    "g": "x",
+    "q": [
+     0
+    ]
+   },
+   {
+    "g": "cz",
+    "q": [
+     1,
+     3
+    ]
+   },
+   {
+    "g": "cz",
+    "q": [
+     0,
+     2
+    ]
+   },
+   {
+    "g": "cx",
+    "q": [
+     1,
+     0
+    ]
+   },
+   {
+    "g": "cz",
+    "q": [
+     1,
+     3
+    ]
+   },
+   {
+    "g": "cz",
+    "q": [
+     0,
+     2
+    ]
+   },
+   {
+    "g": "cx",
+    "q": [
+     1,
+     3
+    ]
+   },
+   {
+    "g": "cz",
+    "q": [
+     3,
+     1
+    ]
+   },
+   {
+    "g": "cz",
+    "q": [
+     3,
+     1
+    ]
+   }
+  ],
+  "measure": [
+   0,
+   1,
+   2,
+   3
+  ],
+  "category": "advanced",
+  "purpose": "Random circuit with CX and CZ",
+  "tags": [
+   "random"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "E28",
+  "name": "long_range_cx_5q",
+  "num_qubits": 5,
+  "ops": [
+   {
+    "g": "x",
+    "q": [
+     1
+    ]
+   },
+   {
+    "g": "h",
+    "q": [
+     0
+    ]
+   },
+   {
+    "g": "cx",
+    "q": [
+     0,
+     4
+    ]
+   },
+   {
+    "g": "cx",
+    "q": [
+     1,
+     3
+    ]
+   },
+   {
+    "g": "cx",
+    "q": [
+     0,
+     2
+    ]
+   },
+   {
+    "g": "cx",
+    "q": [
+     2,
+     4
+    ]
+   }
+  ],
+  "measure": [
+   0,
+   1,
+   2,
+   3,
+   4
+  ],
+  "category": "intermediate",
+  "purpose": "Long-range CX (routing-relevant on hardware, trivial in ideal simulation)",
+  "tags": [
+   "connectivity"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "E29",
+  "name": "mixed_4q",
+  "num_qubits": 4,
+  "ops": [
+   {
+    "g": "h",
+    "q": [
+     0
+    ]
+   },
+   {
+    "g": "ry",
+    "q": [
+     1
+    ],
+    "p": [
+     0.4
+    ]
+   },
+   {
+    "g": "cx",
+    "q": [
+     0,
+     1
+    ]
+   },
+   {
+    "g": "cz",
+    "q": [
+     1,
+     2
+    ]
+   },
+   {
+    "g": "swap",
+    "q": [
+     2,
+     3
+    ]
+   },
+   {
+    "g": "rz",
+    "q": [
+     3
+    ],
+    "p": [
+     0.7
+    ]
+   },
+   {
+    "g": "cx",
+    "q": [
+     0,
+     3
+    ]
+   }
+  ],
+  "measure": [
+   0,
+   1,
+   2,
+   3
+  ],
+  "category": "intermediate",
+  "purpose": "Mixed gate types",
+  "tags": [
+   "mixed"
+  ],
+  "notes": ""
+ },
+ {
+  "id": "E30",
+  "name": "bernstein_vazirani_101",
+  "num_qubits": 4,
+  "ops": [
+   {
+    "g": "x",
+    "q": [
+     3
+    ]
+   },
+   {
+    "g": "h",
+    "q": [
+     3
+    ]
+   },
+   {
+    "g": "h",
+    "q": [
+     0
+    ]
+   },
+   {
+    "g": "h",
+    "q": [
+     1
+    ]
+   },
+   {
+    "g": "h",
+    "q": [
+     2
+    ]
+   },
+   {
+    "g": "cx",
+    "q": [
+     0,
+     3
+    ]
+   },
+   {
+    "g": "cx",
+    "q": [
+     2,
+     3
+    ]
+   },
+   {
+    "g": "h",
+    "q": [
+     0
+    ]
+   },
+   {
+    "g": "h",
+    "q": [
+     1
+    ]
+   },
+   {
+    "g": "h",
+    "q": [
+     2
+    ]
+   }
+  ],
+  "measure": [
+   0,
+   1,
+   2
+  ],
+  "category": "advanced",
+  "purpose": "Bernstein-Vazirani, secret 101; measure the query register",
+  "tags": [
+   "algorithm",
+   "partial_measurement"
+  ],
+  "notes": ""
+ }
+]

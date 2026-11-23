@@ -1,0 +1,147 @@
+import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+dotenv.config({ path: path.resolve(process.cwd(), '../.env') });
+dotenv.config(); // Fallback if ran from root directly
+import express from 'express';
+import cookieParser from 'cookie-parser';
+import helmet from 'helmet';
+import cors from 'cors';
+import { type Db } from 'mongodb';
+import { connectMongo, closeMongo } from './db/mongo.js';
+import { ensureIndexes } from './db/collections.js';
+import { createAuthRouter } from './auth/router.js';
+import { createSimulationsRouter } from './simulations/router.js';
+import { createExperimentsRouter } from './experiments/router.js';
+import { createSharedRouter, createShareManagementRouter } from './sharing/router.js';
+import { createJobRunner } from './simulations/runner.js';
+import { createAuthMiddleware } from './middleware/authenticate.js';
+import { createAiRouter } from './ai/router.js';
+import { createIntegrationsRouter } from './integrations/router.js';
+import { createGitHubRouter } from './integrations/github-router.js';
+import { createSpinqRouter } from './integrations/spinq-router.js';
+import { createExecutionRouter } from './execution/router.js';
+
+const PORT = parseInt(process.env.PORT || '3001', 10);
+
+/** Create the Express app wired to the given MongoDB Db instance. */
+export function createApp(database: Db, onJobCreated?: () => void) {
+  const app = express();
+
+  // Security headers
+  // frame-ancestors replaces X-Frame-Options so Moodle is allowed to embed the studio.
+  const frameAncestors = [
+    "'self'",
+    ...(process.env.FRAME_ANCESTORS || '')
+      .split(',')
+      .map((s) => s.trim())
+      .filter(Boolean),
+  ];
+  app.use(
+    helmet({
+      frameguard: false, // removes X-Frame-Options: SAMEORIGIN
+      contentSecurityPolicy: {
+        useDefaults: true,
+        directives: { 'frame-ancestors': frameAncestors },
+      },
+    }),
+  );
+
+  const allowedOrigins = [
+    'http://localhost:5173',
+    'https://quantum-studio2.vercel.app',
+    'https://www.quantumstudio.space',
+    'https://quantumstudio.space',
+  ];
+  if (process.env.APP_URL && !allowedOrigins.includes(process.env.APP_URL)) {
+    allowedOrigins.push(process.env.APP_URL);
+  }
+
+  const corsMiddleware = cors({
+    origin: (origin, callback) => {
+      // Allow requests with no origin (curl, mobile apps, server-to-server)
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error(`CORS: origin '${origin}' not allowed`));
+      }
+    },
+    credentials: true,
+  });
+
+  app.use((req, res, next) => {
+    // The Moodle SSO endpoint is a plain browser form post (page navigation), not a
+    // fetch/XHR, so CORS does not apply. The HMAC signature protects this route.
+    if (req.path === '/api/auth/moodle/callback') return next();
+    return corsMiddleware(req, res, next);
+  });
+
+  // Body parsing and cookies
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: true }));
+  app.use(cookieParser());
+
+  // Attach authenticated user to request (non-blocking)
+  app.use(createAuthMiddleware(database));
+
+  // Routes
+  app.get('/api/health', async (_req, res) => {
+    try {
+      await database.command({ ping: 1 });
+      res.json({ status: 'ok', database: 'connected' });
+    } catch {
+      res.status(503).json({ status: 'error', database: 'disconnected' });
+    }
+  });
+
+  app.use('/api/auth', createAuthRouter(database));
+  app.use('/api/v1/simulations', createSimulationsRouter(database, onJobCreated));
+  app.use('/api/experiments', createExperimentsRouter(database));
+  app.use('/api/experiments', createShareManagementRouter(database));
+  app.use('/api/shared', createSharedRouter(database));
+  app.use('/api/ai', createAiRouter());
+  app.use('/api/integrations/ibm-quantum', createIntegrationsRouter(database));
+  app.use('/api/integrations/spinq', createSpinqRouter(database));
+  app.use('/api/integrations/github', createGitHubRouter(database));
+  app.use('/api/execution', createExecutionRouter(database, onJobCreated));
+
+  return app;
+}
+
+// Start server (skipped when imported as a module for testing)
+const isMainModule =
+  process.argv[1] &&
+  import.meta.url.startsWith('file:') &&
+  fileURLToPath(import.meta.url) === process.argv[1];
+if (isMainModule || process.env.START_SERVER === 'true') {
+  connectMongo()
+    .then(async (database) => {
+      await ensureIndexes(database);
+      const jobRunner = createJobRunner(database);
+      const app = createApp(database, () => jobRunner.nudge());
+      jobRunner.start();
+      app.listen(PORT, () => {
+        console.log(`Server listening on http://localhost:${PORT}`);
+      });
+    })
+    .catch((err) => {
+      console.error('Failed to start server:', err);
+      process.exit(1);
+    });
+
+  // Graceful shutdown
+  process.on('SIGTERM', async () => {
+    console.log('[server] SIGTERM received, shutting down...');
+    await closeMongo();
+    process.exit(0);
+  });
+  process.on('SIGINT', async () => {
+    console.log('[server] SIGINT received, shutting down...');
+    await closeMongo();
+    process.exit(0);
+  });
+}
+
+// Default export for backwards compatibility
+export default { createApp };

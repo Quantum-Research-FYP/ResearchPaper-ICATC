@@ -1,0 +1,15 @@
+defect_id,framework,affected_circuit,source_observation,required_correction,provenance
+D01,Cirq,C01-C13,"Counts total 1,000 but percentages divided by 1,024","Recompute probabilities as count / observed total; rerun with 10,000 shots",ACTUAL_AUDIT
+D02,Cirq,"C12,C13,C17,C18,C19",Multi-qubit distributions show only one-bit marginal/single-bit outcomes,Measure all logical qubits and store full-register bitstrings,ACTUAL_AUDIT
+D03,All,C12 etc.,"Bit ordering differs across Qiskit, PennyLane and Braket",Declare one canonical bit order and transform every output before comparison,ACTUAL_AUDIT
+D04,Braket/TKET/Cirq,Multiple,Shot totals differ between code and displayed tables,"Use one common shot count (10,000) and preserve raw counts",ACTUAL_AUDIT
+D05,PennyLane,Multiple,"default.qubit qml.probs without shots is analytic, not sampled counts","Store exact probabilities as exact reference, or configure finite shots and qml.counts",ACTUAL_AUDIT
+D06,Qiskit/TKET,"C05,C06",Duplicate Bell circuit; pytket also duplicates measurement call,Replace C06 with W state; remove duplicate measure_all,ACTUAL_AUDIT
+D07,Qiskit,C25,circuits={} reset erases C01-C24; random circuits differ across RNGs,Generate once from canonical spec and serialize/import to each framework,ACTUAL_AUDIT
+D08,Braket,"C21,C22",Implementations are not valid QFTs,Rebuild controlled-phase network; verify with nonzero inputs and inverse round-trip,ACTUAL_AUDIT
+D09,pytket,"C04,C15-C17,C23,C24",Rotation angle convention is half-turns; values interpreted as multiples of pi,Convert radians to pytket half-turn units consistently and test matrix equivalence,ACTUAL_AUDIT
+D10,pytket,"C21,C22",CRz used where controlled-phase is required,Use CU1/controlled-phase equivalent; verify unitary up to global phase,ACTUAL_AUDIT
+D11,Multiple,C04-C25 etc.,Missing framework results and partial PennyLane C22 outcomes,Rerun and store complete distributions in machine-readable files,ACTUAL_AUDIT
+D12,All,All,No valid common canonical circuit representation demonstrated,Define each logical circuit once in shared IR; generate all framework implementations,ACTUAL_AUDIT
+D13,All,All,TVD table empty / not defensible,"Do not calculate cross-framework TVD until circuit, measurement, ordering and shots are aligned",ACTUAL_AUDIT
+D14,QFT interpretation,QFT-3/QFT-4,"Flat output for QFT(|000...0>) is expected, not an error; weak phase test","Use nonzero basis input, statevector/unitary comparison, or QFT†QFT round-trip",REVIEWER_CORRECTION

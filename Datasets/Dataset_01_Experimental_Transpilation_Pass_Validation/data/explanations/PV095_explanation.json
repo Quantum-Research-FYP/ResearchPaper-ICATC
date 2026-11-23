@@ -1,0 +1,11 @@
+{
+  "explanation_id": "EXP_PV095",
+  "record_id": "PV095",
+  "pass_name": "VF2Layout",
+  "stage": "Qubit Mapping",
+  "purpose": "Attempts to find an isomorphic subgraph mapping between the logical circuit and hardware topology.",
+  "rationale": "If the two-qubit interaction pattern of the circuit can be matched exactly to a connected subgraph of the hardware, no SWAP gates are needed for routing.",
+  "pipeline_reason": "Included as the preferred layout strategy; falls back to SabreLayout if no isomorphic mapping exists.",
+  "engine_version": "QuantumStudio-TranspileEngine-v2.1",
+  "timestamp_utc": "2026-11-18T10:00:00Z"
+}

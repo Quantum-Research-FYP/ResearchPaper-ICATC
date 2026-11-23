@@ -1,0 +1,22 @@
+{
+  "record_id": "PV197",
+  "circuit_id": "T08",
+  "pass_name": "InverseCancellation",
+  "pass_type": "TransformationPass",
+  "stage": "Optimization",
+  "execution_time_ms": 0.0,
+  "before": {
+    "gates": 2,
+    "depth": 2
+  },
+  "after": {
+    "gates": 0,
+    "depth": 0
+  },
+  "delta_gates": -2,
+  "delta_depth": -2,
+  "changed_gates": [
+    "h: -2"
+  ],
+  "circuit_changed": true
+}

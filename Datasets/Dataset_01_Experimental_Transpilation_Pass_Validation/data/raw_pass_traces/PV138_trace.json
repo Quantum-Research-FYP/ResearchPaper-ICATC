@@ -1,0 +1,24 @@
+{
+  "record_id": "PV138",
+  "circuit_id": "T13",
+  "pass_name": "BasisTranslator",
+  "pass_type": "TransformationPass",
+  "stage": "Gate Decomposition",
+  "execution_time_ms": 0.46133995056152344,
+  "before": {
+    "gates": 2,
+    "depth": 2
+  },
+  "after": {
+    "gates": 18,
+    "depth": 12
+  },
+  "delta_gates": 16,
+  "delta_depth": 10,
+  "changed_gates": [
+    "cz: +6",
+    "swap: -2",
+    "sx: +12"
+  ],
+  "circuit_changed": true
+}

@@ -1,0 +1,25 @@
+{
+  "record_id": "PV190",
+  "circuit_id": "T20",
+  "pass_name": "HighLevelSynthesis",
+  "pass_type": "TransformationPass",
+  "stage": "Optimization",
+  "execution_time_ms": 4.2972564697265625,
+  "before": {
+    "gates": 1,
+    "depth": 1
+  },
+  "after": {
+    "gates": 31,
+    "depth": 27
+  },
+  "delta_gates": 30,
+  "delta_depth": 26,
+  "changed_gates": [
+    "cx: +14",
+    "h: +2",
+    "mcx: -1",
+    "p: +15"
+  ],
+  "circuit_changed": true
+}

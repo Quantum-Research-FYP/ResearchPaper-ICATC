@@ -1,0 +1,181 @@
+{
+  "study_title": "Experimental Controlled Study: Quantum Circuit Learning Platform vs Conventional Materials",
+  "provenance": "EMPIRICAL_EXPERIMENTAL_STUDY",
+  "group_a_platform_results": {
+    "group_name": "Group A (Quantum Circuit Learning Platform)",
+    "sample_size_n": 25,
+    "pre_test": {
+      "mean": 51.8,
+      "sd": 22.4
+    },
+    "post_test": {
+      "mean": 78.0,
+      "sd": 19.31
+    },
+    "absolute_learning_gain_percentage_points": {
+      "mean": 26.2,
+      "sd": 12.44,
+      "standard_error": 2.49,
+      "ci_95": [
+        21.07,
+        31.33
+      ]
+    },
+    "normalized_learning_gain_hake_g": {
+      "mean_of_individual_g": 0.6174,
+      "sd_of_individual_g": 0.2526,
+      "se_of_individual_g": 0.0505,
+      "ci_95": [
+        0.5131,
+        0.7216
+      ],
+      "aggregate_gain_from_group_means": 0.5436,
+      "formula": "g = (S_post - S_pre) / (100 - S_pre)"
+    },
+    "paired_samples_t_test": {
+      "t_statistic": 10.5307,
+      "degrees_of_freedom": 24,
+      "p_value": 1.7737411353131467e-10
+    },
+    "wilcoxon_signed_rank_test": {
+      "w_statistic": 0.0,
+      "p_value": 1.7388534089978305e-05
+    },
+    "paired_effect_size_cohens_dz": 2.1061
+  },
+  "group_b_comparison_results": {
+    "group_name": "Group B (Conventional Learning Materials)",
+    "sample_size_n": 25,
+    "pre_test": {
+      "mean": 44.4,
+      "sd": 18.22
+    },
+    "post_test": {
+      "mean": 68.2,
+      "sd": 18.31
+    },
+    "absolute_learning_gain_percentage_points": {
+      "mean": 23.8,
+      "sd": 10.44,
+      "standard_error": 2.09,
+      "ci_95": [
+        19.49,
+        28.11
+      ]
+    },
+    "normalized_learning_gain_hake_g": {
+      "mean_of_individual_g": 0.4598,
+      "sd_of_individual_g": 0.1758,
+      "se_of_individual_g": 0.0352,
+      "ci_95": [
+        0.3872,
+        0.5324
+      ],
+      "aggregate_gain_from_group_means": 0.4281,
+      "formula": "g = (S_post - S_pre) / (100 - S_pre)"
+    },
+    "paired_samples_t_test": {
+      "t_statistic": 11.4025,
+      "degrees_of_freedom": 24,
+      "p_value": 3.570902994534911e-11
+    },
+    "wilcoxon_signed_rank_test": {
+      "w_statistic": 0.0,
+      "p_value": 5.960464477539063e-08
+    },
+    "paired_effect_size_cohens_dz": 2.2805
+  },
+  "between_group_comparison": {
+    "comparison": "Group A (Platform) vs Group B (Comparison)",
+    "mean_gain_difference_percentage_points": 2.4,
+    "standard_error_of_difference": 3.25,
+    "ci_95_difference": [
+      -4.13,
+      8.93
+    ],
+    "welch_independent_samples_t_test": {
+      "t_statistic": 0.739,
+      "degrees_of_freedom": 46.59,
+      "p_value": 0.463604426810894
+    },
+    "mann_whitney_u_test": {
+      "u_statistic": 364.5,
+      "p_value": 0.31310079485414133
+    },
+    "between_group_cohens_d": 0.209
+  },
+  "topic_weighting_reconciliation": {
+    "reviewer_2_note": "Clarify overall score weighting vs unweighted topic average and origin of 0.72 value.",
+    "topics": [
+      {
+        "topic": "Circuit construction",
+        "item_count": 5,
+        "pre_percent": 54.4,
+        "post_percent": 82.4,
+        "gain_percentage_points": 28.0,
+        "normalized_gain_g": 0.671,
+        "item_weight": 0.25,
+        "weighted_gain_contribution": 7.0
+      },
+      {
+        "topic": "Hardware constraints",
+        "item_count": 3,
+        "pre_percent": 56.0,
+        "post_percent": 74.667,
+        "gain_percentage_points": 18.667,
+        "normalized_gain_g": 0.58,
+        "item_weight": 0.15,
+        "weighted_gain_contribution": 2.8
+      },
+      {
+        "topic": "Optimization",
+        "item_count": 3,
+        "pre_percent": 46.667,
+        "post_percent": 73.333,
+        "gain_percentage_points": 26.666,
+        "normalized_gain_g": 0.593,
+        "item_weight": 0.15,
+        "weighted_gain_contribution": 4.0
+      },
+      {
+        "topic": "Superposition and entanglement",
+        "item_count": 5,
+        "pre_percent": 46.4,
+        "post_percent": 75.2,
+        "gain_percentage_points": 28.8,
+        "normalized_gain_g": 0.598,
+        "item_weight": 0.25,
+        "weighted_gain_contribution": 7.2
+      },
+      {
+        "topic": "Transpilation and routing",
+        "item_count": 4,
+        "pre_percent": 56.0,
+        "post_percent": 82.0,
+        "gain_percentage_points": 26.0,
+        "normalized_gain_g": 0.72,
+        "item_weight": 0.2,
+        "weighted_gain_contribution": 5.2
+      }
+    ],
+    "unweighted_topic_gain_average": 25.63,
+    "item_count_weighted_overall_gain": 26.2,
+    "overall_test_mean_gain": 26.2,
+    "explanation": "The 20-item test comprises 5 topics with unequal item counts (5, 5, 4, 3, 3). The overall score is correctly item-count weighted (Total Correct / 20 * 100 = 26.20%). A simple unweighted topic average produces 25.63%. Furthermore, 0.720 is the exact normalized gain (g) for the Transpilation and routing topic."
+  },
+  "system_usability_scale_validation": {
+    "scale_type": "Standard 10-Item System Usability Scale (Brooke, 1996)",
+    "scoring_formula": "Score = 2.5 * [sum(odd - 1) + sum(5 - even)]",
+    "items_count": 10,
+    "sample_size_n": 25,
+    "mean_sus": 75.7,
+    "sd_sus": 10.77,
+    "ci_95": [
+      71.26,
+      80.14
+    ],
+    "min_sus": 57.5,
+    "max_sus": 92.5,
+    "score_77_5_verification": "Participant S001 scored exactly 77.50; overall Group A mean is 75.70."
+  }
+}

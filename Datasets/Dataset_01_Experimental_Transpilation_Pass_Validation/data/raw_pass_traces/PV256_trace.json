@@ -1,0 +1,20 @@
+{
+  "record_id": "PV256",
+  "circuit_id": "T19",
+  "pass_name": "FilterOpNodes",
+  "pass_type": "TransformationPass",
+  "stage": "Optimization",
+  "execution_time_ms": 0.6439685821533203,
+  "before": {
+    "gates": 23,
+    "depth": 19
+  },
+  "after": {
+    "gates": 23,
+    "depth": 19
+  },
+  "delta_gates": 0,
+  "delta_depth": 0,
+  "changed_gates": [],
+  "circuit_changed": false
+}

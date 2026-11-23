@@ -1,0 +1,32 @@
+{
+  "dataset": "Dataset 03 – Experimental AI Tutor Evaluation",
+  "version": "3.0",
+  "provenance": "EMPIRICAL_EXPERIMENTAL_EVALUATION",
+  "total_benchmark_questions": 85,
+  "category_distribution": {
+    "Circuit understanding": 20,
+    "Transpilation": 20,
+    "Hardware execution": 15,
+    "Debugging": 15,
+    "Optimization": 15
+  },
+  "evaluated_systems": {
+    "generic_baseline": "GPT-4o (Standard Prompting)",
+    "circuit_grounded_tutor": "Quantum Circuit Tutor (AST & Trace Grounded)"
+  },
+  "evaluators_count": 2,
+  "rubric_scale": "0-2 per criterion (Correctness, Relevance, Circuit Grounding, Explanation Quality)",
+  "files": [
+    "DATA_DICTIONARY.md",
+    "EVALUATION_RUBRIC.md",
+    "PAPER_REPORTING_GUIDE.md",
+    "README.md",
+    "analyze_experimental_tutor.py",
+    "category_distribution.csv",
+    "dataset03_ai_tutor_evaluation_85_questions.csv",
+    "experimental_tutor_summary.json",
+    "manifest.json",
+    "summary_by_criterion.csv",
+    "tutor_responses_DATA_ENTRY_TEMPLATE.csv"
+  ]
+}

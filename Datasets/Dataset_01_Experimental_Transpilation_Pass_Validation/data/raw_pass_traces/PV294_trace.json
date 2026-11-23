@@ -1,0 +1,20 @@
+{
+  "record_id": "PV294",
+  "circuit_id": "T06",
+  "pass_name": "ContainsInstruction",
+  "pass_type": "AnalysisPass",
+  "stage": "Optimization",
+  "execution_time_ms": 0.0,
+  "before": {
+    "gates": 5,
+    "depth": 3
+  },
+  "after": {
+    "gates": 5,
+    "depth": 3
+  },
+  "delta_gates": 0,
+  "delta_depth": 0,
+  "changed_gates": [],
+  "circuit_changed": false
+}

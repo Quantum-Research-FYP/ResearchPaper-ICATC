@@ -1,0 +1,26 @@
+{
+  "record_id": "PV158",
+  "circuit_id": "T23",
+  "pass_name": "BasisTranslator",
+  "pass_type": "TransformationPass",
+  "stage": "Gate Decomposition",
+  "execution_time_ms": 0.0,
+  "before": {
+    "gates": 5,
+    "depth": 3
+  },
+  "after": {
+    "gates": 19,
+    "depth": 13
+  },
+  "delta_gates": 14,
+  "delta_depth": 10,
+  "changed_gates": [
+    "cx: +1",
+    "cz: -1",
+    "h: -4",
+    "rz: +12",
+    "sx: +6"
+  ],
+  "circuit_changed": true
+}

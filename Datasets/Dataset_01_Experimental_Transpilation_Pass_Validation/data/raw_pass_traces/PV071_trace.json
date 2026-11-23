@@ -1,0 +1,22 @@
+{
+  "record_id": "PV071",
+  "circuit_id": "T28",
+  "pass_name": "SabreLayout",
+  "pass_type": "TransformationPass",
+  "stage": "Qubit Mapping",
+  "execution_time_ms": 15.765905380249023,
+  "before": {
+    "gates": 5,
+    "depth": 4
+  },
+  "after": {
+    "gates": 6,
+    "depth": 5
+  },
+  "delta_gates": 1,
+  "delta_depth": 1,
+  "changed_gates": [
+    "swap: +1"
+  ],
+  "circuit_changed": true
+}

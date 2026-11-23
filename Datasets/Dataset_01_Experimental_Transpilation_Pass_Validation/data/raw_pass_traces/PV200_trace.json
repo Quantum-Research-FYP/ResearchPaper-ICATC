@@ -1,0 +1,22 @@
+{
+  "record_id": "PV200",
+  "circuit_id": "T14",
+  "pass_name": "Optimize1qGatesDecomposition",
+  "pass_type": "TransformationPass",
+  "stage": "Optimization",
+  "execution_time_ms": 0.0,
+  "before": {
+    "gates": 19,
+    "depth": 13
+  },
+  "after": {
+    "gates": 18,
+    "depth": 12
+  },
+  "delta_gates": -1,
+  "delta_depth": -1,
+  "changed_gates": [
+    "sx: -1"
+  ],
+  "circuit_changed": true
+}

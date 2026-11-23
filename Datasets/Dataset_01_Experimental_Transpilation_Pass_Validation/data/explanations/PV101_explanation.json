@@ -1,0 +1,11 @@
+{
+  "explanation_id": "EXP_PV101",
+  "record_id": "PV101",
+  "pass_name": "ApplyLayout",
+  "stage": "Qubit Mapping",
+  "purpose": "Applies the chosen qubit layout by relabeling qubit references throughout the circuit.",
+  "rationale": "After a layout pass selects which physical qubits to use, this pass updates all gate references to use the physical qubit indices.",
+  "pipeline_reason": "Runs immediately after any Layout pass to apply the selected physical qubit assignment.",
+  "engine_version": "QuantumStudio-TranspileEngine-v2.1",
+  "timestamp_utc": "2026-11-18T10:00:00Z"
+}

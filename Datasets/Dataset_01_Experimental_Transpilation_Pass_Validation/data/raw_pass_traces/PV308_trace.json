@@ -1,0 +1,20 @@
+{
+  "record_id": "PV308",
+  "circuit_id": "T01",
+  "pass_name": "EnlargeWithAncilla",
+  "pass_type": "TransformationPass",
+  "stage": "Qubit Mapping",
+  "execution_time_ms": 0.0,
+  "before": {
+    "gates": 2,
+    "depth": 1
+  },
+  "after": {
+    "gates": 2,
+    "depth": 1
+  },
+  "delta_gates": 0,
+  "delta_depth": 0,
+  "changed_gates": [],
+  "circuit_changed": false
+}

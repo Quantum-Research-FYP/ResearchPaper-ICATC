@@ -1,0 +1,5 @@
+criterion,generic_ai_baseline_mean_0_to_2,circuit_grounded_tutor_mean_0_to_2,difference_grounded_minus_generic,n_evaluations_per_system
+correctness,1.553,1.788,0.235,170
+relevance,1.624,1.8,0.176,170
+circuit_grounding,1.235,1.929,0.694,170
+explanation_quality,1.553,1.988,0.435,170

@@ -1,0 +1,12 @@
+﻿item,statement,polarity,scoring
+1,I think that I would like to use this platform frequently.,positive,response-1
+2,I found the platform unnecessarily complex.,negative,5-response
+3,I thought the platform was easy to use.,positive,response-1
+4,I think that I would need the support of a technical person to be able to use this platform.,negative,5-response
+5,I found the various functions in this platform were well integrated.,positive,response-1
+6,I thought there was too much inconsistency in this platform.,negative,5-response
+7,I would imagine that most people would learn to use this platform very quickly.,positive,response-1
+8,I found the platform very cumbersome to use.,negative,5-response
+9,I felt very confident using the platform.,positive,response-1
+10,I needed to learn a lot of things before I could get going with this platform.,negative,5-response
+,"SUS score = 2.5 x (sum of the ten item scores); range 0-100. Responses 1 (strongly disagree) to 5 (strongly agree). Wording adapted from Brooke (1996), 'system' replaced by 'platform'.",,

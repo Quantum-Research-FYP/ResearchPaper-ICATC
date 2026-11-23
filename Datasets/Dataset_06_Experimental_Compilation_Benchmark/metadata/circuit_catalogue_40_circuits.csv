@@ -1,0 +1,41 @@
+﻿circuit_id,name,num_qubits,category,purpose,logical_gates_before,logical_depth_before,logical_multiqubit_before,status
+T01,basic_single_qubit,2,basic,1q gates only,2,1,0,BENCHMARK_CANONICAL
+T02,bell_state,2,basic,,2,2,1,BENCHMARK_CANONICAL
+T03,bell_measurement,2,basic,Measurement present,2,2,1,BENCHMARK_CANONICAL
+T04,ghz_3,3,basic,,3,3,2,BENCHMARK_CANONICAL
+T05,ghz_4,4,basic,,4,4,3,BENCHMARK_CANONICAL
+T06,rotations,2,basic,,5,3,0,BENCHMARK_CANONICAL
+T07,rotation_merge_opportunity,1,basic,Optimisation: merge rotations,5,5,0,BENCHMARK_CANONICAL
+T08,h_h_cancellation,1,basic,Optimisation: cancel inverse pair,2,2,0,BENCHMARK_CANONICAL
+T09,x_x_cancellation,1,basic,Optimisation: cancel inverse pair,2,2,0,BENCHMARK_CANONICAL
+T10,cx_cx_cancellation,2,basic,Optimisation: cancel inverse CX pair,2,2,2,BENCHMARK_CANONICAL
+T11,cx_chain,3,basic,Routing on linear coupling map,3,3,3,BENCHMARK_CANONICAL
+T12,reverse_cx,2,basic,Gate direction,1,1,1,BENCHMARK_CANONICAL
+T13,swap_circuit,3,basic,SWAP decomposition,2,2,2,BENCHMARK_CANONICAL
+T14,swap_entanglement,3,basic,,3,3,2,BENCHMARK_CANONICAL
+T15,barrier_circuit,2,basic,Barriers block optimisation,5,5,3,BENCHMARK_CANONICAL
+T16,barrier_h_h_h,1,basic,Barriers block cancellation,5,5,0,BENCHMARK_CANONICAL
+T17,controlled_rotations,2,basic,Non-native controlled rotations,3,3,3,BENCHMARK_CANONICAL
+T18,toffoli,3,basic,Non-native 3-qubit gate,1,1,1,BENCHMARK_CANONICAL
+T19,toffoli_extended,3,basic,,4,3,1,BENCHMARK_CANONICAL
+T20,mcx3,4,basic,Non-native multi-controlled gate,1,1,1,BENCHMARK_CANONICAL
+T21,qft_3,3,basic,QFT (controlled-phase + swaps),7,6,4,BENCHMARK_CANONICAL
+T22,qft_4,4,basic,,12,8,8,BENCHMARK_CANONICAL
+T23,h_cz_h_phase,2,basic,,5,3,1,BENCHMARK_CANONICAL
+T24,mixed_entanglement,3,basic,,4,4,2,BENCHMARK_CANONICAL
+T25,parameterized,2,basic,Symbolic parameter,3,3,1,BENCHMARK_CANONICAL
+T26,parameterized_repeated,2,basic,Repeated symbolic rotations,5,3,1,BENCHMARK_CANONICAL
+T27,connectivity_challenge,4,basic,Violates linear coupling map,4,3,3,BENCHMARK_CANONICAL
+T28,long_range_cx,5,basic,Long-range CX,5,4,4,BENCHMARK_CANONICAL
+T29,mixed_4q,4,basic,,7,6,4,BENCHMARK_CANONICAL
+T30,random_5q_seed42,5,basic,,23,12,8,BENCHMARK_CANONICAL
+T31,grover_2q,2,basic,Grover,12,7,2,BENCHMARK_CANONICAL
+T32,grover_3q_2iter,3,advanced,Grover with Toffoli,39,21,4,BENCHMARK_CANONICAL
+T33,teleportation,3,intermediate,,7,5,4,BENCHMARK_CANONICAL
+T34,w_state_3,3,intermediate,,8,6,3,BENCHMARK_CANONICAL
+T35,qft_5,5,advanced,"Deeper QFT, many long-range gates",17,10,12,BENCHMARK_CANONICAL
+T36,bernstein_vazirani_1011,5,intermediate,,13,6,3,BENCHMARK_CANONICAL
+T37,random_5q_seed7,5,advanced,,32,18,12,BENCHMARK_CANONICAL
+T38,random_6q_seed11,6,advanced,,38,16,14,BENCHMARK_CANONICAL
+T39,ghz_6,6,intermediate,,6,6,5,BENCHMARK_CANONICAL
+T40,all_to_all_cx_5q,5,advanced,Every qubit pair interacts: heavy routing,15,8,10,BENCHMARK_CANONICAL

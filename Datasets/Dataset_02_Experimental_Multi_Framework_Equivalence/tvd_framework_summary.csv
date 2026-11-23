@@ -1,0 +1,7 @@
+﻿framework,total_runs,circuits_tested,mean_tvd,std_tvd,max_tvd,runs_within_sampling_threshold,pass_rate_percent
+qiskit,90,30,0.00353,0.003243,0.0102,89,98.89
+cirq,90,30,0.003802,0.003574,0.012,90,100.0
+pennylane,90,30,0.005008,0.004783,0.0203,84,93.33
+tket,90,30,0.00353,0.003243,0.0102,89,98.89
+braket,90,30,0.003741,0.003895,0.0127,86,95.56
+openqasm3,90,30,0.00353,0.003243,0.0102,89,98.89

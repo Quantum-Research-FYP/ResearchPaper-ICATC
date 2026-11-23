@@ -1,0 +1,149 @@
+{
+  "dataset_name": "Dataset 03 \u2014 Experimental AI Tutor Evaluation",
+  "question_sample_size": 85,
+  "category_distribution": {
+    "Circuit understanding": 20,
+    "Transpilation": 20,
+    "Hardware execution": 15,
+    "Debugging": 15,
+    "Optimization": 15
+  },
+  "distribution_matches_reviewer_requirements": true,
+  "rubric_criterion_comparison_0_to_2": {
+    "correctness": {
+      "generic_baseline": {
+        "mean": 1.553,
+        "sd": 0.5
+      },
+      "circuit_grounded_tutor": {
+        "mean": 1.788,
+        "sd": 0.411
+      },
+      "mean_difference": 0.235,
+      "difference_95_ci": [
+        0.104,
+        0.367
+      ],
+      "paired_t_test": {
+        "t_statistic": 3.5541,
+        "degrees_of_freedom": 84,
+        "p_value": 0.0006255247268196591
+      },
+      "wilcoxon_test": {
+        "w_statistic": 148.0,
+        "p_value": 0.0008581206663936744
+      },
+      "cohens_dz": 0.3855
+    },
+    "relevance": {
+      "generic_baseline": {
+        "mean": 1.624,
+        "sd": 0.487
+      },
+      "circuit_grounded_tutor": {
+        "mean": 1.8,
+        "sd": 0.402
+      },
+      "mean_difference": 0.176,
+      "difference_95_ci": [
+        0.035,
+        0.318
+      ],
+      "paired_t_test": {
+        "t_statistic": 2.4732,
+        "degrees_of_freedom": 84,
+        "p_value": 0.015407732874244285
+      },
+      "wilcoxon_test": {
+        "w_statistic": 240.0,
+        "p_value": 0.016309171877754974
+      },
+      "cohens_dz": 0.2683
+    },
+    "circuit_grounding": {
+      "generic_baseline": {
+        "mean": 1.235,
+        "sd": 0.908
+      },
+      "circuit_grounded_tutor": {
+        "mean": 1.929,
+        "sd": 0.175
+      },
+      "mean_difference": 0.694,
+      "difference_95_ci": [
+        0.516,
+        0.872
+      ],
+      "paired_t_test": {
+        "t_statistic": 7.7654,
+        "degrees_of_freedom": 84,
+        "p_value": 1.784446742252079e-11
+      },
+      "wilcoxon_test": {
+        "w_statistic": 0.0,
+        "p_value": 5.036899785300936e-08
+      },
+      "cohens_dz": 0.8423
+    },
+    "explanation_quality": {
+      "generic_baseline": {
+        "mean": 1.553,
+        "sd": 0.5
+      },
+      "circuit_grounded_tutor": {
+        "mean": 1.988,
+        "sd": 0.108
+      },
+      "mean_difference": 0.435,
+      "difference_95_ci": [
+        0.323,
+        0.548
+      ],
+      "paired_t_test": {
+        "t_statistic": 7.6872,
+        "degrees_of_freedom": 84,
+        "p_value": 2.554633779428596e-11
+      },
+      "wilcoxon_test": {
+        "w_statistic": 20.0,
+        "p_value": 3.1278866279011977e-09
+      },
+      "cohens_dz": 0.8338
+    }
+  },
+  "total_composite_score_0_to_8": {
+    "generic_total_mean": 5.965,
+    "generic_total_sd": 2.301,
+    "grounded_total_mean": 7.506,
+    "grounded_total_sd": 0.875,
+    "mean_gain": 1.541,
+    "paired_t_statistic": 6.1726,
+    "p_value": 2.28227242390318e-08,
+    "cohens_dz": 0.6695
+  },
+  "hallucination_evaluation": {
+    "formula": "Hallucination Rate = (Unsupported Claims / Total Questions) * 100",
+    "total_questions_evaluated": 85,
+    "generic_baseline": {
+      "flagged_answers": 27,
+      "hallucination_rate_percent": 31.76,
+      "wilson_95_ci_percent": [
+        22.84,
+        42.27
+      ]
+    },
+    "circuit_grounded_tutor": {
+      "flagged_answers": 1,
+      "hallucination_rate_percent": 1.18,
+      "wilson_95_ci_percent": [
+        0.21,
+        6.37
+      ]
+    },
+    "absolute_reduction_percentage_points": 30.59,
+    "mcnemar_paired_test": {
+      "chi2_statistic": 22.3214,
+      "p_value": 2.306187599291998e-06
+    }
+  }
+}

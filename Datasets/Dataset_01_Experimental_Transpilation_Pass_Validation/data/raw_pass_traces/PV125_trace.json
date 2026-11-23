@@ -1,0 +1,31 @@
+{
+  "record_id": "PV125",
+  "circuit_id": "T30",
+  "pass_name": "BasisTranslator",
+  "pass_type": "TransformationPass",
+  "stage": "Gate Decomposition",
+  "execution_time_ms": 2.000093460083008,
+  "before": {
+    "gates": 24,
+    "depth": 13
+  },
+  "after": {
+    "gates": 53,
+    "depth": 34
+  },
+  "delta_gates": 29,
+  "delta_depth": 21,
+  "changed_gates": [
+    "cx: +3",
+    "h: -2",
+    "rx: -2",
+    "ry: -3",
+    "rz: +23",
+    "swap: -1",
+    "sx: +12",
+    "x: +3",
+    "y: -3",
+    "z: -1"
+  ],
+  "circuit_changed": true
+}

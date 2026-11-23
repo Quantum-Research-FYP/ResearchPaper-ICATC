@@ -1,0 +1,26 @@
+{
+  "record_id": "PV141",
+  "circuit_id": "T04",
+  "pass_name": "BasisTranslator",
+  "pass_type": "TransformationPass",
+  "stage": "Gate Decomposition",
+  "execution_time_ms": 0.0,
+  "before": {
+    "gates": 3,
+    "depth": 3
+  },
+  "after": {
+    "gates": 17,
+    "depth": 11
+  },
+  "delta_gates": 14,
+  "delta_depth": 8,
+  "changed_gates": [
+    "cx: -2",
+    "cz: +2",
+    "h: -1",
+    "rz: +10",
+    "sx: +5"
+  ],
+  "circuit_changed": true
+}

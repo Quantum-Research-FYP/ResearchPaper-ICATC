@@ -1,0 +1,27 @@
+circuit_id,logical_bitstring_canonical,ideal_probability,simulator_name,simulator_version,simulation_method,noise_model,shots_or_analytic,seed,bit_order_convention,measurement_mapping,notes
+HW01,0,0.5000000000,Qiskit Aer,0.17.2,statevector,none,analytic,none,q0_left,q0->c0,Hadamard superposition
+HW01,1,0.5000000000,Qiskit Aer,0.17.2,statevector,none,analytic,none,q0_left,q0->c0,Hadamard superposition
+HW02,0,0.5000000000,Qiskit Aer,0.17.2,statevector,none,analytic,none,q0_left,q0->c0,Ry(pi/2) rotation
+HW02,1,0.5000000000,Qiskit Aer,0.17.2,statevector,none,analytic,none,q0_left,q0->c0,Ry(pi/2) rotation
+HW03,0,0.0000000000,Qiskit Aer,0.17.2,statevector,none,analytic,none,q0_left,q0->c0,X gate readout check
+HW03,1,1.0000000000,Qiskit Aer,0.17.2,statevector,none,analytic,none,q0_left,q0->c0,X gate readout check
+HW04,00,0.5000000000,Qiskit Aer,0.17.2,statevector,none,analytic,none,q0_left,q0->c0;q1->c1,Bell state Phi+
+HW04,01,0.0000000000,Qiskit Aer,0.17.2,statevector,none,analytic,none,q0_left,q0->c0;q1->c1,Bell state Phi+
+HW04,10,0.0000000000,Qiskit Aer,0.17.2,statevector,none,analytic,none,q0_left,q0->c0;q1->c1,Bell state Phi+
+HW04,11,0.5000000000,Qiskit Aer,0.17.2,statevector,none,analytic,none,q0_left,q0->c0;q1->c1,Bell state Phi+
+HW05,00,0.5000000000,Qiskit Aer,0.17.2,statevector,none,analytic,none,q0_left,q0->c0;q1->c1,Reverse-direction entanglement
+HW05,01,0.0000000000,Qiskit Aer,0.17.2,statevector,none,analytic,none,q0_left,q0->c0;q1->c1,Reverse-direction entanglement
+HW05,10,0.0000000000,Qiskit Aer,0.17.2,statevector,none,analytic,none,q0_left,q0->c0;q1->c1,Reverse-direction entanglement
+HW05,11,0.5000000000,Qiskit Aer,0.17.2,statevector,none,analytic,none,q0_left,q0->c0;q1->c1,Reverse-direction entanglement
+HW06,00,0.8535533906,Qiskit Aer,0.17.2,statevector,none,analytic,none,q0_left,q0->c0;q1->c1,cos^2(pi/8)
+HW06,01,0.0000000000,Qiskit Aer,0.17.2,statevector,none,analytic,none,q0_left,q0->c0;q1->c1,cos^2(pi/8)
+HW06,10,0.0000000000,Qiskit Aer,0.17.2,statevector,none,analytic,none,q0_left,q0->c0;q1->c1,sin^2(pi/8)
+HW06,11,0.1464466094,Qiskit Aer,0.17.2,statevector,none,analytic,none,q0_left,q0->c0;q1->c1,sin^2(pi/8)
+HW07,000,0.5000000000,Qiskit Aer,0.17.2,statevector,none,analytic,none,q0_left,q0->c0;q1->c1;q2->c2,GHZ-3 state
+HW07,001,0.0000000000,Qiskit Aer,0.17.2,statevector,none,analytic,none,q0_left,q0->c0;q1->c1;q2->c2,GHZ-3 state
+HW07,010,0.0000000000,Qiskit Aer,0.17.2,statevector,none,analytic,none,q0_left,q0->c0;q1->c1;q2->c2,GHZ-3 state
+HW07,011,0.0000000000,Qiskit Aer,0.17.2,statevector,none,analytic,none,q0_left,q0->c0;q1->c1;q2->c2,GHZ-3 state
+HW07,100,0.0000000000,Qiskit Aer,0.17.2,statevector,none,analytic,none,q0_left,q0->c0;q1->c1;q2->c2,GHZ-3 state
+HW07,101,0.0000000000,Qiskit Aer,0.17.2,statevector,none,analytic,none,q0_left,q0->c0;q1->c1;q2->c2,GHZ-3 state
+HW07,110,0.0000000000,Qiskit Aer,0.17.2,statevector,none,analytic,none,q0_left,q0->c0;q1->c1;q2->c2,GHZ-3 state
+HW07,111,0.5000000000,Qiskit Aer,0.17.2,statevector,none,analytic,none,q0_left,q0->c0;q1->c1;q2->c2,GHZ-3 state

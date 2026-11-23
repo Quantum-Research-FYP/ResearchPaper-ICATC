@@ -1,0 +1,20 @@
+{
+  "record_id": "PV257",
+  "circuit_id": "T14",
+  "pass_name": "HighLevelSynthesis",
+  "pass_type": "TransformationPass",
+  "stage": "Optimization",
+  "execution_time_ms": 0.6079673767089844,
+  "before": {
+    "gates": 3,
+    "depth": 3
+  },
+  "after": {
+    "gates": 3,
+    "depth": 3
+  },
+  "delta_gates": 0,
+  "delta_depth": 0,
+  "changed_gates": [],
+  "circuit_changed": false
+}
