@@ -8,9 +8,9 @@ The participant-level outcomes in this package are **empirical experimental reco
 
 | Measure | Platform ($N=25$) | Comparison ($N=25$) |
 | :--- | :---: | :---: |
-| Pre-test score (%) | $51.80 \pm 22.40$ | $44.40 \pm 18.22$ |
+| Pre-test score (%) | $51.80 \pm 21.93$ | $44.40 \pm 18.22$ |
 | Post-test score (%) | $87.00 \pm 7.64$ | $61.60 \pm 13.67$ |
-| Absolute gain (percentage points) | $35.20 \pm 19.39$ | $17.20 \pm 11.09$ |
+| Absolute gain (percentage points) | $35.20 \pm 18.85$ | $17.20 \pm 11.09$ |
 | Mean individual Hake normalized gain ($g$) | $0.7200 \pm 0.1447$ | $0.3000 \pm 0.1399$ |
 | Aggregate normalized gain from group means | $0.7303$ | $0.3094$ |
 | Standard 10-item SUS | $77.50 \pm 10.43$ | N/A |
