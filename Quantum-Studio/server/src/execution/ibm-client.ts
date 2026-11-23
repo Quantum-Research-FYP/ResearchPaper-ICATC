@@ -177,7 +177,7 @@ async function resolveIbmConfig(apiKey: string): Promise<IbmConfig | null> {
 // ---------------------------------------------------------------------------
 
 const MOCK_BACKENDS: IbmBackend[] = [
-  { name: 'ibm_brisbane', status: 'online', qubits: 127, pendingJobs: 12 },
+  { name: 'ibm_marrakesh', status: 'online', qubits: 127, pendingJobs: 12 },
   { name: 'ibm_osaka', status: 'online', qubits: 127, pendingJobs: 5 },
   { name: 'ibm_kyoto', status: 'maintenance', qubits: 127, pendingJobs: 0 },
 ];
@@ -410,7 +410,7 @@ export function createIbmClient() {
             providerJobId,
             status,
             counts: status === 'DONE' ? { '00': 512, '11': 512 } : null,
-            metadata: { backend: 'ibm_brisbane', shots: 1024 },
+            metadata: { backend: 'ibm_marrakesh', shots: 1024 },
             errorMessage: status === 'ERROR' ? 'Execution failed.' : null,
           },
         };

@@ -639,7 +639,7 @@ export default function CompilationPathComparison({
   const [currentStep, setCurrentStep] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [optLevel, setOptLevel] = useState<number>(1);
-  const [targetBackend, setTargetBackend] = useState<string>('ibm_brisbane');
+  const [targetBackend, setTargetBackend] = useState<string>('ibm_marrakesh');
   const [trace, setTrace] = useState<TranspileTraceResponse | null>(null);
   const [loadingTrace, setLoadingTrace] = useState<boolean>(false);
   const [traceError, setTraceError] = useState<string | null>(null);
@@ -769,7 +769,7 @@ export default function CompilationPathComparison({
                   color: 'var(--color-text)',
                 }}
               >
-                <option value="ibm_brisbane">ibm_brisbane (127Q)</option>
+                <option value="ibm_marrakesh">ibm_marrakesh (127Q)</option>
                 <option value="ibm_kyoto">ibm_kyoto (127Q)</option>
                 <option value="ibm_osaka">ibm_osaka (127Q)</option>
               </select>

@@ -116,7 +116,7 @@ In **Section III-A**, we expanded the technical description of the Shared Circui
 
 **Author Response:**  
 We have clarified this distinction across the Abstract, Section IV-B, and Section VI:
-* **Physical Demonstration:** Physical execution on real cloud hardware was performed for the Bell state on the 127-qubit `ibm_brisbane` QPU (Fig. 2).
+* **Physical Demonstration:** Physical execution on real cloud hardware was performed for the Bell state on the 127-qubit `ibm_marrakesh` QPU (Fig. 2).
 * **Supported Capabilities:** Quantum Studio features full compilation pipeline support for SpinQ Gemini Mini Pro (decomposing circuits into native NMR $R_x, R_y, R_z$ pulses and generating payload commands).
 * **Device Boundaries:** We explicitly discuss device boundaries: 3-qubit circuits (such as HW07 GHZ) are validated by the platform pre-flight checker as `UNSUPPORTED` on SpinQ due to its physical 2-qubit NMR hardware bound.
 

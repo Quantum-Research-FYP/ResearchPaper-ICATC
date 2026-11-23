@@ -137,7 +137,7 @@ describe('anonymous simulator access', () => {
   it('keeps hardware providers login-only for anonymous users', async () => {
     const res = await request(app).post('/api/execution/jobs').send({
       provider: 'ibm_quantum',
-      backend: 'ibm_brisbane',
+      backend: 'ibm_marrakesh',
       qasm: 'OPENQASM 2.0;',
       shots: 100,
     });

@@ -298,7 +298,7 @@ export function createSimulationHandlers(pool: Db, onJobCreated?: () => void) {
               body: JSON.stringify({
                 code: qasm,
                 codeType: mode === 'python' ? 'python' : 'qasm',
-                backend: backend || 'ibm_brisbane',
+                backend: backend || 'ibm_marrakesh',
                 ibm_token: ibmToken || undefined,
                 ibm_channel: ibmToken ? 'ibm_quantum' : undefined,
                 optimization_level: typeof optimizationLevel === 'number' ? optimizationLevel : 1,

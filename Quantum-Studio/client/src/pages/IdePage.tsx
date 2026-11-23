@@ -1514,7 +1514,7 @@ export default function IdePage() {
                   qasm={files[activeFile]}
                   codeType={activeFile.endsWith('.py') ? 'python' : 'qasm'}
                   backendName={
-                    selectedProvider === 'ibm_quantum' ? selectedBackend : 'ibm_brisbane'
+                    selectedProvider === 'ibm_quantum' ? selectedBackend : 'ibm_marrakesh'
                   }
                   onClose={() => setBottomTab('terminal')}
                 />

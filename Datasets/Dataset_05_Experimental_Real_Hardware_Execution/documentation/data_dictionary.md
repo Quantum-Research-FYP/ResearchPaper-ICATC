@@ -1,7 +1,7 @@
 # Dataset 05: Real Hardware Execution Data Dictionary
 
 ## Overview
-This dataset contains empirical physical hardware execution benchmarks comparing **IBM Quantum** (superconducting transmon processor `ibm_brisbane`, 127 qubits) and the **SpinQ Gemini Mini Pro** (desktop 2-qubit Nuclear Magnetic Resonance quantum computer).
+This dataset contains empirical physical hardware execution benchmarks comparing **IBM Quantum** (superconducting transmon processor `ibm_marrakesh`, 127 qubits) and the **SpinQ Gemini Mini Pro** (desktop 2-qubit Nuclear Magnetic Resonance quantum computer).
 
 The benchmark suite evaluates a standardized progression of 6 quantum circuits (from single-qubit rotations to two-qubit entanglement) across multiple physical runs (1024 shots each), along with compilation traces, device calibration snapshots, and Total Variation Distance ($D_{TV}$) calculations against analytical ideal references.
 
@@ -29,11 +29,11 @@ The benchmark suite evaluates a standardized progression of 6 quantum circuits (
 ## Core Variables & Definitions
 
 ### `metadata/device_profiles_experimental.csv`
-- `hardware_id`: Canonical hardware identifier (`HW_IBM_BRISBANE`, `HW_SPINQ_GEMINI_MINI_PRO`).
+- `hardware_id`: Canonical hardware identifier (`HW_IBM_MARRAKESH`, `HW_SPINQ_GEMINI_MINI_PRO`).
 - `vendor`: Device manufacturer (`IBM Quantum`, `SpinQ Technology`).
 - `device_model`: Architecture generation (`Eagle r3`, `Gemini Mini Pro`).
-- `backend_name`: Target backend API name (`ibm_brisbane`, `spinq_gemini_mini_pro`).
-- `physical_qubit_count`: Total physical qubits on hardware (127 for IBM Brisbane; 2 for SpinQ).
+- `backend_name`: Target backend API name (`ibm_marrakesh`, `spinq_gemini_mini_pro`).
+- `physical_qubit_count`: Total physical qubits on hardware (127 for IBM Marrakesh; 2 for SpinQ).
 - `connectivity_topology`: Coupling layout (`Heavy-hex lattice` vs `All-to-all direct coupling`).
 - `native_gate_set`: Device-native basis gates (`[cx, id, rz, sx, x]` vs `[rx, ry, rz, jz, cx]`).
 - `measurement_capabilities`: Dispersive readout (IBM) vs NMR RF FID ensemble acquisition (SpinQ).

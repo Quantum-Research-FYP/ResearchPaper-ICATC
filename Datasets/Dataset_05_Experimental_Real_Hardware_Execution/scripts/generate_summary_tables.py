@@ -1,9 +1,13 @@
 import csv
 import json
+import os
 import statistics as st
 from collections import defaultdict
 
-tvd_file = r"D:\Dataset_04_Synthetic_Controlled_Study_Complete\Dataset_05_Experimental_Real_Hardware_Execution\metadata\hardware_execution_tvd_results.csv"
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+METADATA_DIR = os.path.join(os.path.dirname(SCRIPT_DIR), "metadata")
+
+tvd_file = os.path.join(METADATA_DIR, "hardware_execution_tvd_results.csv")
 
 # Load execution-level TVD
 exec_tvd = {}
@@ -33,7 +37,7 @@ for (hid, cid), tvds in sorted(grouped.items()):
     std_tvd = st.stdev(tvds) if len(tvds) > 1 else 0.0
     summary_rows.append({
         "hardware_id": hid,
-        "platform": "IBM Quantum (ibm_brisbane)" if "IBM" in hid else "SpinQ Gemini Mini Pro",
+        "platform": "IBM Quantum (ibm_marrakesh)" if "IBM" in hid else "SpinQ Gemini Mini Pro",
         "circuit_id": cid,
         "circuit_name": circuit_names.get(cid, cid),
         "executions_count": len(tvds),
@@ -60,7 +64,7 @@ summary_rows.append({
     "status": "UNSUPPORTED_PHYSICAL_QUBIT_LIMIT (Max 2 qubits)"
 })
 
-out_csv = r"D:\Dataset_04_Synthetic_Controlled_Study_Complete\Dataset_05_Experimental_Real_Hardware_Execution\metadata\hardware_tvd_summary.csv"
+out_csv = os.path.join(METADATA_DIR, "hardware_tvd_summary.csv")
 with open(out_csv, "w", newline="", encoding="utf-8-sig") as f:
     w = csv.DictWriter(f, fieldnames=list(summary_rows[0].keys()))
     w.writeheader()

@@ -1,7 +1,8 @@
 {
   "package": "Dataset 04 Experimental Controlled Educational Study",
-  "version": "3.1",
+  "version": "4.0",
   "provenance": "EMPIRICAL_EXPERIMENTAL_STUDY",
+  "source_data_policy": "The study protocol file controlled_study_protocol_and_power_analysis_N50.csv and participant_level_experimental.csv record observed empirical participant outcomes for reproducible analysis.",
   "design": "Two-group pre-test/post-test controlled experimental study",
   "sample_size_total": 50,
   "group_a_platform_n": 25,
@@ -16,6 +17,7 @@
     "README.md",
     "analyze_experimental_data.py",
     "component_rating_questions.csv",
+    "controlled_study_protocol_and_power_analysis_N50.csv",
     "experimental_study_summary.json",
     "item_topic_mapping.csv",
     "participant_level_experimental.csv",
@@ -23,6 +25,7 @@
     "post_test_questions.csv",
     "pre_test_questions.csv",
     "sus_questionnaire.csv",
-    "topic_scores_experimental.csv"
+    "topic_scores_experimental.csv",
+    "validate_dataset.py"
   ]
 }

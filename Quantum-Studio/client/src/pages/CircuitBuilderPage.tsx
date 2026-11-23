@@ -102,7 +102,7 @@ export default function CircuitBuilderPage() {
   const [providers, setProviders] = useState<ExecutionProvider[]>([]);
   const [loadingBackends, setLoadingBackends] = useState(false);
   const [ibmBackends, setIbmBackends] = useState<IbmBackend[]>([
-    { name: 'ibm_brisbane', qubits: 127, pendingJobs: 0, status: 'online' },
+    { name: 'ibm_marrakesh', qubits: 127, pendingJobs: 0, status: 'online' },
     { name: 'ibm_kyoto', qubits: 127, pendingJobs: 0, status: 'online' },
     { name: 'ibm_osaka', qubits: 127, pendingJobs: 0, status: 'online' },
   ]);
@@ -150,7 +150,7 @@ export default function CircuitBuilderPage() {
   useEffect(() => {
     if (executionConfig.provider === 'ibm') {
       if (!executionConfig.backend) {
-        setExecutionConfig((prev) => ({ ...prev, backend: ibmBackends[0]?.name || 'ibm_brisbane' }));
+        setExecutionConfig((prev) => ({ ...prev, backend: ibmBackends[0]?.name || 'ibm_marrakesh' }));
       }
       if (credentialStatus === 'valid') {
         setLoadingBackends(true);
@@ -637,7 +637,7 @@ export default function CircuitBuilderPage() {
             <TranspilationPanel
               qasm={generateOpenQasm(circuit)}
               codeType="qasm"
-              backendName={executionConfig.backend || 'ibm_brisbane'}
+              backendName={executionConfig.backend || 'ibm_marrakesh'}
               onClose={() => {
                 setIsTranspilationModalOpen(false);
                 if (pendingJobId) {
@@ -704,12 +704,12 @@ export default function CircuitBuilderPage() {
                     <select
                       className="form-field__input"
                       style={{ width: '100%', backgroundColor: 'var(--color-surface)', color: 'var(--color-text)', border: '1px solid var(--color-border)', padding: '8px', borderRadius: '4px' }}
-                      value={executionConfig.backend || ibmBackends[0]?.name || 'ibm_brisbane'}
+                      value={executionConfig.backend || ibmBackends[0]?.name || 'ibm_marrakesh'}
                       onChange={(e) => setExecutionConfig({ ...executionConfig, backend: e.target.value })}
                     >
                       {loadingBackends && <option value="">Loading backends...</option>}
                       {!loadingBackends && ibmBackends.length === 0 && (
-                        <option value="ibm_brisbane">ibm_brisbane (127Q)</option>
+                        <option value="ibm_marrakesh">ibm_marrakesh (127Q)</option>
                       )}
                       {ibmBackends.map((b) => (
                         <option key={b.name} value={b.name}>

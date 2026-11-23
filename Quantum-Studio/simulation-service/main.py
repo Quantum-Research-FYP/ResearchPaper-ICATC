@@ -144,7 +144,7 @@ class TranspileIbmRequest(BaseModel):
     codeType: Literal["qasm", "python", "cirq", "pennylane", "braket", "tket"] = Field(
         "qasm", description="Framework / format of the input code"
     )
-    backend: str = Field("ibm_brisbane", description="Target IBM backend name (used for ISA transpilation)")
+    backend: str = Field("ibm_marrakesh", description="Target IBM backend name (used for ISA transpilation)")
     # Credentials — when provided, used to fetch the real backend's coupling map
     # from IBM Quantum / IBM Cloud, ensuring ISA-compliant qubit routing.
     ibm_token: str | None = Field(None, description="Raw IBM API key or IBM Quantum token")
@@ -256,7 +256,7 @@ def _detect_backend_name() -> str:
 # ---------------------------------------------------------------------------
 _IBM_NATIVE_2Q_GATE: dict[str, str] = {
     # Eagle r1 (127 qubits) — native 2Q gate: ecr
-    "ibm_brisbane":   "ecr",
+    "ibm_marrakesh":   "ecr",
     "ibm_osaka":      "ecr",
     "ibm_kyoto":      "ecr",
     "ibm_sherbrooke": "ecr",
@@ -278,7 +278,7 @@ _IBM_NATIVE_2Q_GATE: dict[str, str] = {
 # This is also family-level; the real backend may have a different effective
 # qubit count depending on which qubits are currently calibrated.
 _IBM_BACKEND_QUBIT_COUNT: dict[str, int] = {
-    "ibm_brisbane":   127, "ibm_osaka":      127, "ibm_kyoto":      127,
+    "ibm_marrakesh":   127, "ibm_osaka":      127, "ibm_kyoto":      127,
     "ibm_sherbrooke": 127, "ibm_nazca":      127, "ibm_hanoi":      127,
     "ibm_cairo":      127,
     "ibm_torino":     133,
@@ -584,7 +584,7 @@ class TranspileTraceRequest(BaseModel):
     codeType: Literal["qasm", "python", "cirq", "pennylane", "braket", "tket"] = Field(
         "qasm", description="Framework / format of the input code"
     )
-    backend: str = Field("ibm_brisbane", description="Target IBM backend name (used for ISA transpilation)")
+    backend: str = Field("ibm_marrakesh", description="Target IBM backend name (used for ISA transpilation)")
     ibm_token: str | None = Field(None, description="Raw IBM API key or IBM Quantum token")
     ibm_channel: str | None = Field(None, description="'ibm_quantum' or 'ibm_cloud'")
     ibm_instance: str | None = Field(None, description="CRN for IBM Cloud, or hub/group/project for IBM Quantum")

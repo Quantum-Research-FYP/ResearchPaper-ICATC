@@ -135,7 +135,7 @@ export function useTranspilationEngine(
       const result = await getTranspileTrace({
         qasm,
         mode: 'qasm',
-        backend: 'ibm_brisbane',
+        backend: 'ibm_marrakesh',
         optimizationLevel: 1,
       });
 

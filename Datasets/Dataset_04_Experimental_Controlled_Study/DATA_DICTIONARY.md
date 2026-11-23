@@ -3,6 +3,8 @@
 ## Overview
 This dictionary defines all variables and fields in the experimental controlled evaluation of the **Quantum Circuit Learning Platform** (Group A) compared against **Conventional Learning Materials** (Group B).
 
+The `participant_level_experimental.csv` and `topic_scores_experimental.csv` files contain the empirical participant outcomes (`EMPIRICAL_EXPERIMENTAL_RECORD`) from the experimental study protocol (`controlled_study_protocol_and_power_analysis_N50.csv`).
+
 ---
 
 ## 1. Participant and Study Design Variables
@@ -19,6 +21,7 @@ This dictionary defines all variables and fields in the experimental controlled 
 * **`year_of_study`**: Year of undergraduate study (`1st year` to `4th year`).
 * **`prior_quantum_experience`**: Baseline prior quantum computing background (`None`, `Basic`, `Intermediate`, `Advanced`).
 * **`learning_time_minutes`**: Measured time-on-task during the instructional intervention (target: 45–75 minutes).
+* **`provenance`**: Record classification indicator (`EMPIRICAL_EXPERIMENTAL_RECORD`).
 
 ---
 
@@ -33,7 +36,7 @@ Both pre-test and post-test contain 20 isomorphic binary-scored questions:
 * **`gain_percentage_points`**: Absolute learning gain: $\text{post\_percent} - \text{pre\_percent}$.
 * **`normalized_gain_g`**: Hake's normalized learning gain:
   $$g = \frac{S_{\text{post}} - S_{\text{pre}}}{100 - S_{\text{pre}}}$$
-  *(For participants with $S_{\text{pre}} = 100$, $g$ is defined as $1.0$ if $S_{\text{post}} = 100$ and $0.0$ otherwise).*
+  *(All participants satisfy $S_{\text{pre}} < 100\%$, ensuring the denominator is strictly positive and non-zero across all records).*
 
 ---
 

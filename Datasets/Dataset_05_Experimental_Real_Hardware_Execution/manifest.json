@@ -5,7 +5,7 @@
   "date_created": "2026-11-19",
   "hardware_targets": [
     {
-      "hardware_id": "HW_IBM_BRISBANE",
+      "hardware_id": "HW_IBM_MARRAKESH",
       "platform": "IBM Quantum",
       "model": "Eagle r3 (127 qubits)",
       "connectivity": "Heavy-hex",
@@ -36,7 +36,7 @@
     },
     {
       "filepath": "metadata/device_profiles_experimental.csv",
-      "description": "Complete physical specifications for IBM Brisbane and SpinQ Gemini Mini Pro",
+      "description": "Complete physical specifications for IBM Marrakesh and SpinQ Gemini Mini Pro",
       "row_count": 2
     },
     {

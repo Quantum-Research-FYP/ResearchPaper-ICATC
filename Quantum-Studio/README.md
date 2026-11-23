@@ -113,7 +113,7 @@ Integrated selector panel allowing users to choose where their quantum program e
 
 1. **Local High-Performance Simulator**: Executes on `qiskit_aer.AerSimulator` (or basic simulator fallback) for fast statevector and shot-based simulation.
 2. **Real Physical IBM QPU Hardware**: Direct execution on real superconducting quantum processors via IBM Quantum Runtime Service (Sampler V2):
-   - **Supported Hardware Backends**: `ibm_brisbane`, `ibm_osaka`, `ibm_kyoto`, `ibm_sherbrooke`, `ibm_nazca`, `ibm_hanoi`, `ibm_cairo` (Eagle 127q), `ibm_torino` (Heron 133q), `ibm_fez`, `ibm_kingston`, `ibm_marrakesh`, `ibm_strasbourg` (Heron 156q).
+   - **Supported Hardware Backends**: `ibm_marrakesh`, `ibm_osaka`, `ibm_kyoto`, `ibm_sherbrooke`, `ibm_nazca`, `ibm_hanoi`, `ibm_cairo` (Eagle 127q), `ibm_torino` (Heron 133q), `ibm_fez`, `ibm_kingston`, `ibm_marrakesh`, `ibm_strasbourg` (Heron 156q).
    - **Per-QPU ISA Transpilation (`/transpile-ibm`)**: Converts circuits to target QPU native basis gates (`ecr` for Eagle, `cz` for Heron) using exact physical coupling maps cached for 5 minutes.
 
 ### 2.3 Parameterized Noise Simulator Panel

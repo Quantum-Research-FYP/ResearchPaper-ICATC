@@ -183,16 +183,15 @@ def run_analysis(data_file="participant_level_experimental.csv", topic_file="top
         overall_mean = float(grp_a["gain_calc"].mean())
 
         topic_reconciliation = {
-            "reviewer_2_note": "Clarify overall score weighting vs unweighted topic average and origin of 0.72 value.",
+            "note": "Overall scores are item-count weighted; normalized gain is calculated participant by participant.",
             "topics": t_summary.round(3).to_dict(orient="records"),
             "unweighted_topic_gain_average": round(unweighted_mean, 2),
             "item_count_weighted_overall_gain": round(weighted_mean, 2),
             "overall_test_mean_gain": round(overall_mean, 2),
             "explanation": (
                 "The 20-item test comprises 5 topics with unequal item counts (5, 5, 4, 3, 3). "
-                "The overall score is correctly item-count weighted (Total Correct / 20 * 100 = 26.20%). "
-                "A simple unweighted topic average produces 25.63%. Furthermore, 0.720 is the exact normalized "
-                "gain (g) for the Transpilation and routing topic."
+                f"The item-count weighted overall absolute gain is {weighted_mean:.2f} percentage points; "
+                f"the unweighted topic average is {unweighted_mean:.2f} percentage points."
             )
         }
 
@@ -221,12 +220,16 @@ def run_analysis(data_file="participant_level_experimental.csv", topic_file="top
             "ci_95": [round(float(ci_sus[0]), 2), round(float(ci_sus[1]), 2)],
             "min_sus": round(float(grp_a["sus_score"].min()), 2),
             "max_sus": round(float(grp_a["sus_score"].max()), 2),
-            "score_77_5_verification": "Participant S001 scored exactly 77.50; overall Group A mean is 75.70."
+            "recalculation_matches_stored_scores": bool(np.allclose(recomputed_sus, grp_a["sus_score"])),
         }
 
     master_summary = {
         "study_title": "Experimental Controlled Study: Quantum Circuit Learning Platform vs Conventional Materials",
-        "provenance": "EMPIRICAL_EXPERIMENTAL_STUDY",
+        "provenance": (
+            "EMPIRICAL_EXPERIMENTAL_STUDY"
+            if "provenance" in df.columns and df["provenance"].astype(str).str.contains("EMPIRICAL").all()
+            else "EXPERIMENTAL_STUDY"
+        ),
         "group_a_platform_results": results_a,
         "group_b_comparison_results": results_b,
         "between_group_comparison": between_group_results,

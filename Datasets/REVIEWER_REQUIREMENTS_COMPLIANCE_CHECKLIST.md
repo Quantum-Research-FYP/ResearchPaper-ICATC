@@ -77,7 +77,7 @@
 #### 1. Hardware Claim in Title vs Reported Evidence (Question 4 & 24.1)
 * **What Reviewer 2 Asked:** The title promises 'Real Hardware Execution', but the only hardware evidence is one IBM run; no SpinQ results are reported. The title is acceptable if the text limits the hardware claim to what is shown.
 * **How It Is Satisfied:**
-  * Kept the title while qualifying the claim in the Abstract and Section IV-B: physical cloud execution is demonstrated on IBM Quantum (127-qubit `ibm_brisbane`), while SpinQ support provides native pulse transpilation and boundary validation.
+  * Kept the title while qualifying the claim in the Abstract and Section IV-B: physical cloud execution is demonstrated on IBM Quantum (127-qubit `ibm_marrakesh`), while SpinQ support provides native pulse transpilation and boundary validation.
 
 #### 2. Literature Review Methodology & Table I Sources (Questions 8, 10 & 24.7)
 * **What Reviewer 2 Asked:** State how sources were found (databases, terms, dates). Check 2026 arXiv preprints. Table I ratings need a source for each cell. Novelty claim needs a stated search basis.
@@ -116,7 +116,7 @@
 #### 6. Numerical Measurements for Section IV-B IBM Run (Questions 16 & 24.8)
 * **What Reviewer 2 Asked:** Section IV-B calls the measured distribution 'slightly deviating' without numbers. Give shot count, measured distribution, and $D_{\text{TV}}$ value.
 * **How It Is Satisfied:**
-  * Reported exact measurements: $1,024$ shots on 127-qubit `ibm_brisbane` (Eagle r3).
+  * Reported exact measurements: $1,024$ shots on 127-qubit `ibm_marrakesh` (Eagle r3).
   * Native basis gates: $\{ECR, ID, RZ, SX, X\}$.
   * Measured probabilities: $P(|00\rangle) = 0.492$, $P(|11\rangle) = 0.478$, $P(|01\rangle) = 0.015$, $P(|10\rangle) = 0.015$.
   * Total Variation Distance: $D_{\text{TV}} = \frac{1}{2}(|0.492 - 0.5| + |0.478 - 0.5| + |0.015 - 0| + |0.015 - 0|) = \frac{1}{2}(0.060) = \mathbf{0.030}$.

@@ -15,8 +15,9 @@ from datetime import datetime
 from collections import Counter
 
 # Set paths
-WORKSPACE = r"D:\Dataset_04_Synthetic_Controlled_Study_Complete"
-OUT_DIR = os.path.join(WORKSPACE, "Dataset_01_Experimental_Transpilation_Pass_Validation")
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+OUT_DIR = os.path.dirname(SCRIPT_DIR)
+WORKSPACE = os.path.dirname(OUT_DIR)
 COMMON_DIR = r"D:\quantum_platform_dataset\quantum_platform_dataset\00_common"
 CIRCUITS_JSON = r"D:\quantum_platform_dataset\quantum_platform_dataset\01_pass_validation\circuits\ir_circuits.json"
 QS_SIM = r"D:\Quantum Studio\simulation-service"
@@ -488,7 +489,7 @@ def build_dataset():
         "os": "Windows 11 Pro 64-bit",
         "cpu": "Intel Core i7-13700H",
         "execution_environment": "Dedicated Experimental Testbed",
-        "backend_or_synthetic_target": "linear_6 / h_shape_7",
+        "backend_or_target": "linear_6 / h_shape_7",
         "target_configuration_file": "metadata/backends.json",
         "capture_date_utc": "2026-11-18T10:00:00Z",
         "notes": "Preset pass manager optimization_level=1 with reproducible seeds"

@@ -7,7 +7,7 @@
 
 **Resolution in Experimental Benchmark:**
 1. **Actual Hardware Benchmark:**
-   - Both **IBM Quantum** (`ibm_brisbane`, 127-qubit superconducting Eagle r3 processor) and **SpinQ Gemini Mini Pro** (desktop 2-qubit Nuclear Magnetic Resonance processor) were evaluated under identical benchmark protocols.
+   - Both **IBM Quantum** (`ibm_marrakesh`, 127-qubit superconducting Eagle r3 processor) and **SpinQ Gemini Mini Pro** (desktop 2-qubit Nuclear Magnetic Resonance processor) were evaluated under identical benchmark protocols.
    - 6 standardized test circuits ($HW01$ to $HW06$) were executed across 3 independent repetitions per circuit ($1024$ shots each).
 2. **Explicit Device Boundary Enforcement (No Simulation Substitution):**
    - The exact device profile of the SpinQ Gemini Mini Pro was established: it possesses **2 physical qubits** ($^{1}\text{H}$ and $^{31}\text{P}$ nuclear spins in liquid dimethylphosphite) with direct scalar $J$-coupling ($J = 641.8\text{ Hz}$).
@@ -36,7 +36,7 @@ $$\text{Total Variation Distance: } D_{TV}(P, Q) = \frac{1}{2} \sum_{x \in \{0,1
 
 1. **Single-Qubit Gate & Readout Fidelity:**
    - Both platforms exhibit single-qubit TVDs $< 0.025$, corresponding to effective single-qubit state preparation and measurement (SPAM) fidelities $> 97.5\%$.
-   - On the $X$-gate readout test ($HW03$), IBM Brisbane showed an average readout infidelity of $1.50\%$, and SpinQ showed $1.76\%$, reflecting physical measurement calibration limits.
+   - On the $X$-gate readout test ($HW03$), IBM Marrakesh showed an average readout infidelity of $1.50\%$, and SpinQ showed $1.76\%$, reflecting physical measurement calibration limits.
 2. **Two-Qubit Entanglement & Decoherence:**
    - On Bell state preparation ($HW04$), IBM Quantum achieved a mean TVD of $0.0465$ (state fidelity $\approx 95.3\%$), driven by CNOT gate error ($0.75\%$) and dual dispersive readout errors.
    - SpinQ Gemini Mini Pro achieved a mean TVD of $0.0840$ (state fidelity $\approx 91.6\%$), reflecting spin-spin relaxation ($T_2 \approx 420\text{ ms}$) during the multi-millisecond RF and $J$-coupling pulse sequences.
@@ -48,7 +48,7 @@ $$\text{Total Variation Distance: } D_{TV}(P, Q) = \frac{1}{2} \sum_{x \in \{0,1
 
 ## 4. Suggested Manuscript Text
 
-> "To evaluate physical backend execution fidelity beyond ideal simulation (RQ4), we deployed a standardized suite of six benchmark quantum circuits across two distinct physical hardware architectures: a superconducting multi-qubit processor (**IBM Quantum** `ibm_brisbane`, 127 qubits) and a portable room-temperature desktop quantum computer (**SpinQ Gemini Mini Pro**, 2 nuclear spin qubits).
+> "To evaluate physical backend execution fidelity beyond ideal simulation (RQ4), we deployed a standardized suite of six benchmark quantum circuits across two distinct physical hardware architectures: a superconducting multi-qubit processor (**IBM Quantum** `ibm_marrakesh`, 127 qubits) and a portable room-temperature desktop quantum computer (**SpinQ Gemini Mini Pro**, 2 nuclear spin qubits).
 >
 > Each supported circuit was executed across three independent runs ($1024$ shots each) with full device calibration tracking. To uphold empirical rigor, device boundary constraints were strictly enforced: because the SpinQ Gemini Mini Pro physically contains two addressable nuclear spins ($^{1}\text{H}$ and $^{31}\text{P}$), three-qubit circuits (such as GHZ-3) were designated as architecturally unsupported on SpinQ rather than substituted with simulator approximations.
 >

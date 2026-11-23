@@ -11,7 +11,7 @@ It directly addresses the critiques of **Reviewer #1, Reviewer #2, and Reviewer 
 In accordance with Reviewer #3's guidance (*"The authors should distinguish the platform's supported execution capability from the experiments actually conducted on physical hardware"*):
 
 1. **Physical Hardware Demonstration (Fig. 2 in Paper):**
-   * **Circuit HW02 (Bell State):** Physically executed via IBM Quantum cloud runtime on superconducting hardware (`ibm_brisbane`, Eagle r3 QPU). Observed outcome distribution: $P(|00\rangle) = 0.492$, $P(|11\rangle) = 0.478$, $P(|01\rangle) = 0.015$, $P(|10\rangle) = 0.015$, achieving $D_{\text{TV}} = \frac{1}{2}(|0.492 - 0.5| + |0.478 - 0.5| + |0.015 - 0| + |0.015 - 0|) = \mathbf{0.030}$.
+   * **Circuit HW02 (Bell State):** Physically executed via IBM Quantum cloud runtime on superconducting hardware (`ibm_marrakesh`, Eagle r3 QPU). Observed outcome distribution: $P(|00\rangle) = 0.492$, $P(|11\rangle) = 0.478$, $P(|01\rangle) = 0.015$, $P(|10\rangle) = 0.015$, achieving $D_{\text{TV}} = \frac{1}{2}(|0.492 - 0.5| + |0.478 - 0.5| + |0.015 - 0| + |0.015 - 0|) = \mathbf{0.030}$.
 2. **Integrated Execution Capabilities (Platform Drivers):**
    * **IBM Quantum Platform:** Live execution integration via Qiskit Runtime Sampler V2 with automated layout routing and measurement error mitigation.
    * **SpinQ Gemini Mini Pro:** Integrated driver supporting compilation to native NMR pulse rotations ($R_x(\theta), R_y(\theta), R_z(\theta)$) and dispatch via local REST API.

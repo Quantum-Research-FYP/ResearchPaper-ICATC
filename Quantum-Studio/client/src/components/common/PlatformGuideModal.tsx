@@ -139,7 +139,7 @@ const GUIDE_SECTIONS: GuideSection[] = [
       {
         icon: '☁️',
         title: 'Real IBM QPUs',
-        desc: 'Connect your API token in Settings to execute on 127-qubit quantum processors like ibm_brisbane or ibm_osaka.',
+        desc: 'Connect your API token in Settings to execute on 127-qubit quantum processors like ibm_marrakesh or ibm_osaka.',
       },
       {
         icon: '📊',

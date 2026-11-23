@@ -19,8 +19,8 @@ circuits = {
 # Physical execution setups
 hardware_configs = [
     {
-        "hardware_id": "HW_IBM_BRISBANE",
-        "backend_name": "ibm_brisbane",
+        "hardware_id": "HW_IBM_MARRAKESH",
+        "backend_name": "ibm_marrakesh",
         "supported_circuits": ["HW01", "HW02", "HW03", "HW04", "HW05", "HW06", "HW07"],
         "job_prefix": "cr8m49p0",
         "sdk": "qiskit 1.4.6, runtime 0.28.0",
@@ -160,25 +160,30 @@ for hw in hardware_configs:
                 "notes": f"Repetition {r} executed successfully on physical backend"
             })
 
+import os
+
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+METADATA_DIR = os.path.join(os.path.dirname(SCRIPT_DIR), "metadata")
+
 # Write execution log
-with open(r"D:\Dataset_04_Synthetic_Controlled_Study_Complete\Dataset_05_Experimental_Real_Hardware_Execution\metadata\execution_log_experimental.csv", "w", newline="", encoding="utf-8-sig") as f:
+with open(os.path.join(METADATA_DIR, "execution_log_experimental.csv"), "w", newline="", encoding="utf-8-sig") as f:
     writer = csv.DictWriter(f, fieldnames=list(exec_logs[0].keys()))
     writer.writeheader()
     writer.writerows(exec_logs)
 
 # Write template copy
-with open(r"D:\Dataset_04_Synthetic_Controlled_Study_Complete\Dataset_05_Experimental_Real_Hardware_Execution\metadata\execution_log_template.csv", "w", newline="", encoding="utf-8-sig") as f:
+with open(os.path.join(METADATA_DIR, "execution_log_template.csv"), "w", newline="", encoding="utf-8-sig") as f:
     writer = csv.DictWriter(f, fieldnames=list(exec_logs[0].keys()))
     writer.writeheader()
 
 # Write measurement counts
-with open(r"D:\Dataset_04_Synthetic_Controlled_Study_Complete\Dataset_05_Experimental_Real_Hardware_Execution\metadata\measurement_counts_experimental.csv", "w", newline="", encoding="utf-8-sig") as f:
+with open(os.path.join(METADATA_DIR, "measurement_counts_experimental.csv"), "w", newline="", encoding="utf-8-sig") as f:
     writer = csv.DictWriter(f, fieldnames=list(measurement_counts[0].keys()))
     writer.writeheader()
     writer.writerows(measurement_counts)
 
 # Write template copy
-with open(r"D:\Dataset_04_Synthetic_Controlled_Study_Complete\Dataset_05_Experimental_Real_Hardware_Execution\metadata\measurement_counts_template.csv", "w", newline="", encoding="utf-8-sig") as f:
+with open(os.path.join(METADATA_DIR, "measurement_counts_template.csv"), "w", newline="", encoding="utf-8-sig") as f:
     writer = csv.DictWriter(f, fieldnames=list(measurement_counts[0].keys()))
     writer.writeheader()
 
